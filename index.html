@@ -85,7 +85,7 @@ footer{color:var(--faint);font-size:12.5px;padding-block:0 30px}
 <header class="band"><div class="wrap">
   <div class="logo"><div class="mark" aria-hidden="true">B</div><div><b>Bagaggio</b><span>Departamento Jurídico</span></div></div>
   <h1>Solicitações ao Jurídico</h1>
-  <p class="lead">Contratos, notificações, Procon, trabalhista, locação de lojas e o que mais precisar. Preencha uma vez: o pedido chega direto à pessoa responsável pelo assunto e você recebe o número de protocolo para acompanhar.</p>
+  <p class="lead">Contratos, notificações, Procon, trabalhista, locação de lojas e o que mais precisar. Preencha uma vez: com o ok do seu gestor, o pedido chega direto à pessoa responsável pelo assunto, e você recebe o número de protocolo para acompanhar.</p>
 </div></header>
 
 <main><div class="wrap">
@@ -95,10 +95,13 @@ footer{color:var(--faint);font-size:12.5px;padding-block:0 30px}
       <div style="position:absolute;left:-9999px" aria-hidden="true"><label for="site">Não preencha</label><input type="text" id="site" tabindex="-1" autocomplete="off"></div>
       <fieldset><legend>Quem está pedindo</legend>
         <div class="grid2">
-          <div class="f"><label class="l" for="nome">Nome completo</label><input type="text" id="nome" autocomplete="name" required><span class="ferr" id="e-nome"></span></div>
-          <div class="f"><label class="l" for="email">E-mail <small>(de preferência o corporativo)</small></label><input type="email" id="email" autocomplete="email" inputmode="email" required><span class="ferr" id="e-email"></span></div>
+          <div class="f"><label class="l" for="nome">Nome e sobrenome</label><input type="text" id="nome" autocomplete="name" required><span class="ferr" id="e-nome"></span></div>
+          <div class="f"><label class="l" for="email">E-mail corporativo</label><input type="email" id="email" autocomplete="email" inputmode="email" placeholder="nome.sobrenome@bagaggio.com.br" required><span class="ferr" id="e-email"></span></div>
           <div class="f"><label class="l" for="area">Área, loja ou empresa</label><input type="text" id="area" placeholder="Ex.: Loja 214 – Shopping Tijuca; RH; Financeiro" required><span class="ferr" id="e-area"></span></div>
           <div class="f"><label class="l" for="tel">Telefone ou WhatsApp <small>(opcional)</small></label><input type="tel" id="tel" autocomplete="tel" inputmode="tel" placeholder="(21) 9 0000-0000"></div>
+          <div class="f"><label class="l" for="gnome">Gestor <small>(diretor ou gerente)</small></label><input type="text" id="gnome" placeholder="Nome e sobrenome" required><span class="ferr" id="e-gnome"></span></div>
+          <div class="f"><label class="l" for="gemail">E-mail do gestor</label><input type="email" id="gemail" inputmode="email" placeholder="nome.sobrenome@bagaggio.com.br" required><span class="ferr" id="e-gemail"></span></div>
+          <p class="note full" style="margin:-4px 0 0;font-size:12.5px;color:var(--muted)">O seu gestor recebe um e-mail para aprovar a solicitação. O jurídico começa depois do ok dele.</p>
         </div>
       </fieldset>
 
@@ -115,7 +118,7 @@ footer{color:var(--faint);font-size:12.5px;padding-block:0 30px}
           <div class="f"><label class="l" for="prazo">Para quando precisa <small>(opcional)</small></label><input type="date" id="prazo"></div>
           <div class="f"><label class="l" for="proc">Nº de processo, notificação ou protocolo <small>(se houver)</small></label><input type="text" id="proc" placeholder="0000000-00.0000.0.00.0000"></div>
           <div class="f full"><span class="l" style="font-size:13.5px;font-weight:600">Urgência</span>
-            <div class="seg"><label><input type="radio" name="urg" value="normal" checked> Normal</label><label><input type="radio" name="urg" value="alta"> Alta</label><label><input type="radio" name="urg" value="urgente"> Urgente (prazo em até 48 h)</label></div></div>
+            <div class="seg"><label><input type="radio" name="urg" value="normal" checked> Normal (até 4 dias úteis)</label><label><input type="radio" name="urg" value="alta"> Alta (até 4 dias úteis)</label><label><input type="radio" name="urg" value="urgente"> Urgente (prazo em até 48 h)</label></div></div>
         </div>
       </fieldset>
 
@@ -124,8 +127,7 @@ footer{color:var(--faint);font-size:12.5px;padding-block:0 30px}
         <ul class="files" id="fileList"></ul><span class="ferr" id="e-files"></span>
       </fieldset>
 
-      <label class="consent"><input type="checkbox" id="lgpd" required><span>Autorizo o uso destes dados pelo Departamento Jurídico da Bagaggio para atender esta solicitação.</span></label>
-      <span class="ferr" id="e-lgpd"></span>
+      <p class="consent" style="margin:0">Ao enviar a solicitação, autorizo o uso destes dados pelo Departamento Jurídico da Bagaggio para atender o pedido.</p>
       <div class="actions"><span class="formerr" id="formErr" role="alert"></span><button class="btn" type="submit" id="send">Enviar solicitação</button></div>
     </form>
   </div>
@@ -134,7 +136,8 @@ footer{color:var(--faint);font-size:12.5px;padding-block:0 30px}
     <div class="card"><h2>O que acontece depois</h2>
       <ol class="steps">
         <li><span><b>Protocolo na hora</b>Você vê o número do pedido assim que enviar e recebe a confirmação por e-mail.</span></li>
-        <li><span><b>Direcionado ao responsável</b>O pedido vai para a advogada ou advogado que cuida do assunto escolhido.</span></li>
+        <li><span><b>Aprovação do gestor</b>O seu diretor ou gerente recebe um e-mail e dá o ok.</span></li>
+        <li><span><b>Direcionado ao responsável</b>Aprovado, o pedido vai para a advogada ou advogado que cuida do assunto. Prazo: até 4 dias úteis, ou 48 h se for urgente.</span></li>
         <li><span><b>Retorno por e-mail</b>Quando o pedido for concluído, você recebe a resposta no e-mail informado.</span></li>
       </ol></div>
     <p class="note">Dúvidas: juridico@bagaggio.com.br</p>
@@ -166,24 +169,26 @@ $('fileList').addEventListener('click',e=>{const b=e.target.closest('[data-rm]')
 document.addEventListener('paste',e=>{const fs=[...(e.clipboardData?.items||[])].filter(i=>i.kind==='file').map(i=>i.getAsFile()).filter(Boolean);if(!fs.length)return;e.preventDefault();addFiles(fs.map((f,i)=>new File([f],`print-${Date.now()}${fs.length>1?'-'+(i+1):''}.${(f.type.split('/')[1]||'png').replace('jpeg','jpg')}`,{type:f.type})))});
 function val(){let ok=true;const req=[['nome','Informe seu nome.'],['area','Informe sua área, loja ou empresa.'],['titulo','Resuma o pedido em uma linha.'],['desc','Explique o que precisa.']];
   for(const [id,m] of req){const v=$(id).value.trim();$('e-'+id).textContent=v?'':m;$(id).classList.toggle('err-on',!v);if(!v)ok=false}
-  const em=$('email').value.trim();const emOk=/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em);$('e-email').textContent=emOk?'':'Informe um e-mail válido para receber o retorno.';$('email').classList.toggle('err-on',!emOk);if(!emOk)ok=false;
+  const corp=v=>/^[^@\s]+@bagaggio\.com\.br$/i.test(v.trim());
+  const em=$('email').value;$('e-email').textContent=corp(em)?'':'Use o seu e-mail corporativo (@bagaggio.com.br).';$('email').classList.toggle('err-on',!corp(em));if(!corp(em))ok=false;
+  const gn=$('gnome').value.trim();$('e-gnome').textContent=gn?'':'Informe o nome do seu diretor ou gerente.';$('gnome').classList.toggle('err-on',!gn);if(!gn)ok=false;
+  const ge=$('gemail').value;const geOk=corp(ge)&&ge.trim().toLowerCase()!==em.trim().toLowerCase();$('e-gemail').textContent=geOk?'':(corp(ge)?'O e-mail do gestor precisa ser diferente do seu.':'Informe o e-mail corporativo do gestor (@bagaggio.com.br).');$('gemail').classList.toggle('err-on',!geOk);if(!geOk)ok=false;
   const as=document.querySelector('input[name=assunto]:checked');$('e-assunto').textContent=as?'':'Escolha o assunto.';if(!as)ok=false;
   const asd=as&&ASSUNTOS.find(x=>x[0]===as.value);if(asd&&asd[3]){const sb=document.querySelector('input[name=subitem]:checked');if(!sb){ok=false;if($('e-subitem'))$('e-subitem').textContent='Escolha uma opção.'}}
-  $('e-lgpd').textContent=$('lgpd').checked?'':'É preciso autorizar o uso dos dados para atender o pedido.';if(!$('lgpd').checked)ok=false;
   return ok}
 const b64=f=>new Promise((ok,ko)=>{const r=new FileReader();r.onload=()=>ok(String(r.result).split(',')[1]||'');r.onerror=()=>ko(r.error);r.readAsDataURL(f)});
 $('req').addEventListener('submit',async e=>{e.preventDefault();$('formErr').textContent='';
   if(!val()){$('formErr').textContent='Confira os campos destacados.';const f=document.querySelector('.err-on,.ferr:not(:empty)');f&&f.scrollIntoView({behavior:'smooth',block:'center'});return}
   const btn=$('send');btn.disabled=true;btn.textContent='Enviando…';
   if($('site').value){btn.disabled=false;btn.textContent='Enviar solicitação';return}
-  const data={nome:$('nome').value.trim(),email:$('email').value.trim().toLowerCase(),area:$('area').value.trim(),telefone:$('tel').value.trim(),assunto:document.querySelector('input[name=assunto]:checked').value,titulo:$('titulo').value.trim(),descricao:$('desc').value.trim(),prazo:$('prazo').value,processo:$('proc').value.trim(),urgencia:document.querySelector('input[name=urg]:checked').value,subitem:(document.querySelector('input[name=subitem]:checked')||{}).value||''};
+  const data={nome:$('nome').value.trim(),email:$('email').value.trim().toLowerCase(),gestorNome:$('gnome').value.trim(),gestorEmail:$('gemail').value.trim().toLowerCase(),area:$('area').value.trim(),telefone:$('tel').value.trim(),assunto:document.querySelector('input[name=assunto]:checked').value,titulo:$('titulo').value.trim(),descricao:$('desc').value.trim(),prazo:$('prazo').value,processo:$('proc').value.trim(),urgencia:document.querySelector('input[name=urg]:checked').value,subitem:(document.querySelector('input[name=subitem]:checked')||{}).value||''};
   try{let proto;
     if(ENDPOINT){data.arquivos=[];for(const f of FILES){btn.textContent=`Enviando ${data.arquivos.length+1} de ${FILES.length} arquivos…`;data.arquivos.push({nome:f.name,tipo:f.type,base64:await b64(f)})}
       const r=await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)});const j=await r.json();if(!j.ok)throw new Error(j.erro||'falha');proto=j.protocolo}
     else{await new Promise(r=>setTimeout(r,700));proto='REQ-'+new Date().getFullYear()+'-0001'}
     const nomeAs=ASSUNTOS.find(a=>a[0]===data.assunto)[1];
     $('formCard').innerHTML=`<div class="done"><div class="ok" aria-hidden="true">✓</div><h2>Solicitação enviada</h2><div class="proto">${esc(proto)}</div>
-      <p>Guarde este número. A confirmação vai para <b>${esc(data.email)}</b> e o pedido sobre <b>${esc(nomeAs)}</b> já foi direcionado ao responsável no jurídico.</p>
+      <p>Guarde este número. A confirmação vai para <b>${esc(data.email)}</b>. O pedido sobre <b>${esc(nomeAs)}</b> foi enviado para aprovação de <b>${esc(data.gestorNome)}</b> e, com o ok, segue para o responsável no jurídico.</p>
       <p>Se precisar complementar, responda ao e-mail de confirmação informando o protocolo.</p>${ENDPOINT?'':'<p class="note">Prévia: nada foi gravado.</p>'}
       <button class="btn ghost" type="button" onclick="location.reload()">Fazer outra solicitação</button></div>`;
     window.scrollTo({top:0,behavior:'smooth'})}
