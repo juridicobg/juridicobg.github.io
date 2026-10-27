@@ -99,9 +99,9 @@ footer{color:var(--faint);font-size:12.5px;padding-block:0 30px}
           <div class="f"><label class="l" for="email">E-mail corporativo</label><input type="email" id="email" autocomplete="email" inputmode="email" placeholder="nome.sobrenome@bagaggio.com.br" required><span class="ferr" id="e-email"></span></div>
           <div class="f"><label class="l" for="area">Área, loja ou empresa</label><input type="text" id="area" placeholder="Ex.: Loja 214 – Shopping Tijuca; RH; Financeiro" required><span class="ferr" id="e-area"></span></div>
           <div class="f"><label class="l" for="tel">Telefone ou WhatsApp <small>(opcional)</small></label><input type="tel" id="tel" autocomplete="tel" inputmode="tel" placeholder="(21) 9 0000-0000"></div>
-          <div class="f"><label class="l" for="gnome">Gestor <small>(diretor ou gerente)</small></label><input type="text" id="gnome" placeholder="Nome e sobrenome" required><span class="ferr" id="e-gnome"></span></div>
-          <div class="f"><label class="l" for="gemail">E-mail do gestor</label><input type="email" id="gemail" inputmode="email" placeholder="nome.sobrenome@bagaggio.com.br" required><span class="ferr" id="e-gemail"></span></div>
-          <p class="note full" style="margin:-4px 0 0;font-size:12.5px;color:var(--muted)">Em contratos, o seu gestor recebe as considerações do jurídico e dá o ok final para a assinatura. A análise começa logo, sem esperar por ele.</p>
+          <div class="f"><label class="l" for="gnome">Gestor <small>(diretor ou gerente · opcional)</small></label><input type="text" id="gnome" placeholder="Nome e sobrenome"><span class="ferr" id="e-gnome"></span></div>
+          <div class="f"><label class="l" for="gemail">E-mail do gestor <small>(opcional)</small></label><input type="email" id="gemail" inputmode="email" placeholder="nome.sobrenome@bagaggio.com.br"><span class="ferr" id="e-gemail"></span></div>
+          <p class="note full" style="margin:-4px 0 0;font-size:12.5px;color:var(--muted)">Em contratos, o gestor recebe as considerações do jurídico e dá o ok final para a assinatura; a análise começa logo, sem esperar por ele. Se você é o próprio gestor (diretor ou gerente), deixe em branco: o ok final será seu.</p>
         </div>
       </fieldset>
 
@@ -171,8 +171,9 @@ function val(){let ok=true;const req=[['nome','Informe seu nome.'],['area','Info
   for(const [id,m] of req){const v=$(id).value.trim();$('e-'+id).textContent=v?'':m;$(id).classList.toggle('err-on',!v);if(!v)ok=false}
   const corp=v=>/^[^@\s]+@bagaggio\.com\.br$/i.test(v.trim());
   const em=$('email').value;$('e-email').textContent=corp(em)?'':'Use o seu e-mail corporativo (@bagaggio.com.br).';$('email').classList.toggle('err-on',!corp(em));if(!corp(em))ok=false;
-  const gn=$('gnome').value.trim();$('e-gnome').textContent=gn?'':'Informe o nome do seu diretor ou gerente.';$('gnome').classList.toggle('err-on',!gn);if(!gn)ok=false;
-  const ge=$('gemail').value;const geOk=corp(ge)&&ge.trim().toLowerCase()!==em.trim().toLowerCase();$('e-gemail').textContent=geOk?'':(corp(ge)?'O e-mail do gestor precisa ser diferente do seu.':'Informe o e-mail corporativo do gestor (@bagaggio.com.br).');$('gemail').classList.toggle('err-on',!geOk);if(!geOk)ok=false;
+  const gn=$('gnome').value.trim();const ge=$('gemail').value.trim();
+  const gnOk=!ge||!!gn;$('e-gnome').textContent=gnOk?'':'Informe também o nome do gestor.';$('gnome').classList.toggle('err-on',!gnOk);if(!gnOk)ok=false;
+  const geOk=!ge?!gn:corp(ge);$('e-gemail').textContent=geOk?'':(ge?'Informe o e-mail corporativo do gestor (@bagaggio.com.br).':'Informe também o e-mail do gestor.');$('gemail').classList.toggle('err-on',!geOk);if(!geOk)ok=false;
   const as=document.querySelector('input[name=assunto]:checked');$('e-assunto').textContent=as?'':'Escolha o assunto.';if(!as)ok=false;
   const asd=as&&ASSUNTOS.find(x=>x[0]===as.value);if(asd&&asd[3]){const sb=document.querySelector('input[name=subitem]:checked');if(!sb){ok=false;if($('e-subitem'))$('e-subitem').textContent='Escolha uma opção.'}}
   return ok}
@@ -188,7 +189,7 @@ $('req').addEventListener('submit',async e=>{e.preventDefault();$('formErr').tex
     else{await new Promise(r=>setTimeout(r,700));proto='REQ-'+new Date().getFullYear()+'-0001'}
     const nomeAs=ASSUNTOS.find(a=>a[0]===data.assunto)[1];
     $('formCard').innerHTML=`<div class="done"><div class="ok" aria-hidden="true">✓</div><h2>Solicitação enviada</h2><div class="proto">${esc(proto)}</div>
-      <p>Guarde este número. A confirmação vai para <b>${esc(data.email)}</b>. O pedido sobre <b>${esc(nomeAs)}</b> já está com o responsável no jurídico. ${data.assunto==='contratos'?`Depois da análise e dos ajustes, <b>${esc(data.gestorNome)}</b> recebe o pedido de ok para liberar a assinatura.`:`<b>${esc(data.gestorNome)}</b> fica em cópia dos retornos.`}</p>
+      <p>Guarde este número. A confirmação vai para <b>${esc(data.email)}</b>. O pedido sobre <b>${esc(nomeAs)}</b> já está com o responsável no jurídico. ${data.assunto==='contratos'?(data.gestorEmail?`Depois da análise e dos ajustes, <b>${esc(data.gestorNome)}</b> recebe o pedido de ok para liberar a assinatura.`:'Depois da análise e dos ajustes, você recebe o pedido de ok para liberar a assinatura.'):(data.gestorEmail?`<b>${esc(data.gestorNome)}</b> fica em cópia dos retornos.`:'')}</p>
       <p>Se precisar complementar, responda ao e-mail de confirmação informando o protocolo.</p>${ENDPOINT?'':'<p class="note">Prévia: nada foi gravado.</p>'}
       <button class="btn ghost" type="button" onclick="location.reload()">Fazer outra solicitação</button></div>`;
     window.scrollTo({top:0,behavior:'smooth'})}
