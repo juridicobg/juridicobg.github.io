@@ -85,7 +85,7 @@ footer{color:var(--faint);font-size:12.5px;padding-block:0 30px}
 <header class="band"><div class="wrap">
   <div class="logo"><div class="mark" aria-hidden="true">B</div><div><b>Bagaggio</b><span>Departamento Jurídico</span></div></div>
   <h1>Solicitações ao Jurídico</h1>
-  <p class="lead">Contratos, notificações, Procon, trabalhista, locação de lojas e o que mais precisar. Preencha uma vez: com o ok do seu gestor, o pedido chega direto à pessoa responsável pelo assunto, e você recebe o número de protocolo para acompanhar.</p>
+  <p class="lead">Contratos, notificações, Procon, trabalhista, locação de lojas e o que mais precisar. Preencha uma vez: o pedido chega direto à pessoa responsável pelo assunto, e você recebe o número de protocolo para acompanhar.</p>
 </div></header>
 
 <main><div class="wrap">
@@ -101,7 +101,7 @@ footer{color:var(--faint);font-size:12.5px;padding-block:0 30px}
           <div class="f"><label class="l" for="tel">Telefone ou WhatsApp <small>(opcional)</small></label><input type="tel" id="tel" autocomplete="tel" inputmode="tel" placeholder="(21) 9 0000-0000"></div>
           <div class="f"><label class="l" for="gnome">Gestor <small>(diretor ou gerente)</small></label><input type="text" id="gnome" placeholder="Nome e sobrenome" required><span class="ferr" id="e-gnome"></span></div>
           <div class="f"><label class="l" for="gemail">E-mail do gestor</label><input type="email" id="gemail" inputmode="email" placeholder="nome.sobrenome@bagaggio.com.br" required><span class="ferr" id="e-gemail"></span></div>
-          <p class="note full" style="margin:-4px 0 0;font-size:12.5px;color:var(--muted)">O seu gestor recebe um e-mail para aprovar a solicitação. O jurídico começa depois do ok dele.</p>
+          <p class="note full" style="margin:-4px 0 0;font-size:12.5px;color:var(--muted)">Em contratos, o seu gestor recebe as considerações do jurídico e dá o ok final para a assinatura. A análise começa logo, sem esperar por ele.</p>
         </div>
       </fieldset>
 
@@ -136,9 +136,9 @@ footer{color:var(--faint);font-size:12.5px;padding-block:0 30px}
     <div class="card"><h2>O que acontece depois</h2>
       <ol class="steps">
         <li><span><b>Protocolo na hora</b>Você vê o número do pedido assim que enviar e recebe a confirmação por e-mail.</span></li>
-        <li><span><b>Aprovação do gestor</b>O seu diretor ou gerente recebe um e-mail e dá o ok.</span></li>
-        <li><span><b>Direcionado ao responsável</b>Aprovado, o pedido vai para a advogada ou advogado que cuida do assunto. Prazo: até 4 dias úteis, ou 48 h se for urgente.</span></li>
-        <li><span><b>Retorno por e-mail</b>Quando o pedido for concluído, você recebe a resposta no e-mail informado.</span></li>
+        <li><span><b>Direcionado ao responsável</b>O pedido vai direto para a advogada ou advogado que cuida do assunto. Prazo: até 4 dias úteis, ou 48 h se for urgente.</span></li>
+        <li><span><b>Considerações do jurídico</b>Você recebe por e-mail os riscos encontrados e as alterações sugeridas. Em contratos, depois dos ajustes, o seu gestor dá o ok e o contrato é liberado para assinatura.</span></li>
+        <li><span><b>Retorno por e-mail</b>Cada etapa é avisada no e-mail informado, até a conclusão.</span></li>
       </ol></div>
     <p class="note">Dúvidas: juridico@bagaggio.com.br</p>
   </aside>
@@ -188,7 +188,7 @@ $('req').addEventListener('submit',async e=>{e.preventDefault();$('formErr').tex
     else{await new Promise(r=>setTimeout(r,700));proto='REQ-'+new Date().getFullYear()+'-0001'}
     const nomeAs=ASSUNTOS.find(a=>a[0]===data.assunto)[1];
     $('formCard').innerHTML=`<div class="done"><div class="ok" aria-hidden="true">✓</div><h2>Solicitação enviada</h2><div class="proto">${esc(proto)}</div>
-      <p>Guarde este número. A confirmação vai para <b>${esc(data.email)}</b>. O pedido sobre <b>${esc(nomeAs)}</b> foi enviado para aprovação de <b>${esc(data.gestorNome)}</b> e, com o ok, segue para o responsável no jurídico.</p>
+      <p>Guarde este número. A confirmação vai para <b>${esc(data.email)}</b>. O pedido sobre <b>${esc(nomeAs)}</b> já está com o responsável no jurídico. ${data.assunto==='contratos'?`Depois da análise e dos ajustes, <b>${esc(data.gestorNome)}</b> recebe o pedido de ok para liberar a assinatura.`:`<b>${esc(data.gestorNome)}</b> fica em cópia dos retornos.`}</p>
       <p>Se precisar complementar, responda ao e-mail de confirmação informando o protocolo.</p>${ENDPOINT?'':'<p class="note">Prévia: nada foi gravado.</p>'}
       <button class="btn ghost" type="button" onclick="location.reload()">Fazer outra solicitação</button></div>`;
     window.scrollTo({top:0,behavior:'smooth'})}
