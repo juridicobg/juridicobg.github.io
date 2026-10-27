@@ -96,7 +96,7 @@ footer{color:var(--faint);font-size:12.5px;padding-block:0 30px}
       <fieldset><legend>Quem está pedindo</legend>
         <div class="grid2">
           <div class="f"><label class="l" for="nome">Nome completo</label><input type="text" id="nome" autocomplete="name" required><span class="ferr" id="e-nome"></span></div>
-          <div class="f"><label class="l" for="email">E-mail</label><input type="email" id="email" autocomplete="email" inputmode="email" required><span class="ferr" id="e-email"></span></div>
+          <div class="f"><label class="l" for="email">E-mail <small>(de preferência o corporativo)</small></label><input type="email" id="email" autocomplete="email" inputmode="email" required><span class="ferr" id="e-email"></span></div>
           <div class="f"><label class="l" for="area">Área, loja ou empresa</label><input type="text" id="area" placeholder="Ex.: Loja 214 – Shopping Tijuca; RH; Financeiro" required><span class="ferr" id="e-area"></span></div>
           <div class="f"><label class="l" for="tel">Telefone ou WhatsApp <small>(opcional)</small></label><input type="tel" id="tel" autocomplete="tel" inputmode="tel" placeholder="(21) 9 0000-0000"></div>
         </div>
@@ -105,6 +105,7 @@ footer{color:var(--faint);font-size:12.5px;padding-block:0 30px}
       <fieldset><legend>Assunto</legend>
         <div class="topics" id="topics" role="radiogroup" aria-label="Assunto"></div>
         <span class="ferr" id="e-assunto"></span>
+        <div class="f" id="subBox" hidden style="margin-top:12px"></div>
       </fieldset>
 
       <fieldset><legend>O pedido</legend>
@@ -119,7 +120,7 @@ footer{color:var(--faint);font-size:12.5px;padding-block:0 30px}
       </fieldset>
 
       <fieldset><legend>Documentos</legend>
-        <label class="drop" id="drop" tabindex="0"><input type="file" id="files" multiple hidden accept=".pdf,.png,.jpg,.jpeg,.webp,.heic,.docx,.xlsx,.txt,.csv,application/pdf,image/*"><span>Arraste arquivos aqui, <b>clique para escolher</b> ou cole um print (Ctrl+V)<br><small>Contrato, notificação, citação, fotos, prints · até 10 arquivos, 20 MB cada</small></span></label>
+        <label class="drop" id="drop" tabindex="0"><input type="file" id="files" multiple hidden accept=".pdf,.png,.jpg,.jpeg,.webp,.heic,.gif,.doc,.docx,.xls,.xlsx,.txt,.csv,application/pdf,image/*"><span>Arraste arquivos aqui, <b>clique para escolher</b> ou cole um print (Ctrl+V)<br><small>Contrato, notificação, citação, fotos, prints · até 10 arquivos, 20 MB cada, 30 MB no total</small></span></label>
         <ul class="files" id="fileList"></ul><span class="ferr" id="e-files"></span>
       </fieldset>
 
@@ -145,12 +146,16 @@ footer{color:var(--faint);font-size:12.5px;padding-block:0 30px}
 const ENDPOINT='';/* URL do Apps Script que grava a solicitação; vazio = prévia */
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const ASSUNTOS=[['contratos','Contratos','Elaboração e revisão de contratos e aditivos'],['locacao','Locação e shopping','Aluguel, renovação, condomínio, administradoras'],['trabalhista','Trabalhista','Reclamações, acordos, dúvidas de RH'],['consumidor','Consumidor e Procon','Reclamações de clientes, Procon, JEC'],['notificacoes','Notificações e cobranças','Notificar, cobrar, responder notificação'],['tributario','Tributário','Autos de infração, execuções fiscais, impostos'],['societario','Societário e procurações','Atos societários, procurações, certidões'],['outros','Outros','Qualquer outro assunto jurídico']];
-$('topics').innerHTML=ASSUNTOS.map(([k,l,d],i)=>`<label class="topic"><input type="radio" name="assunto" value="${k}"><span><b>${l}</b><small>${d}</small></span></label>`).join('');
+const ASSUNTOS=[['contratos','Contratos em geral','Fornecedores, prestadores, parcerias, aditivos',['Análise','Elaboração']],['locacao','Locação e shopping center','Contratos de locação, renovação, administradoras'],['trabalhista','Trabalhista','Dúvidas de RH, reclamações, acordos',['Consulta','Processo']],['consumidor','Consumidor e Procon','Reclamações de clientes, Procon, JEC',['Consulta','Processo']],['notificacoes','Notificações extrajudiciais','Enviar ou responder uma notificação'],['cobrancas','Cobranças extrajudiciais','Cobrar valores em atraso'],['tributario','Tributário','Autos de infração, execuções fiscais, impostos'],['societario','Societário e procurações','Atos societários, procurações, certidões'],['outros','Outros','Qualquer outro assunto jurídico']];
+$('topics').innerHTML=ASSUNTOS.map(([k,l,d])=>`<label class="topic"><input type="radio" name="assunto" value="${k}"><span><b>${l}</b><small>${d}</small></span></label>`).join('');
+function renderSub(){const as=document.querySelector('input[name=assunto]:checked');const a=as&&ASSUNTOS.find(x=>x[0]===as.value);const box=$('subBox');
+  if(!a||!a[3]){box.hidden=true;box.innerHTML='';return}
+  box.hidden=false;box.innerHTML=`<span class="l" style="font-size:13.5px;font-weight:600">${a[0]==='contratos'?'O que precisa':'Tipo'}</span><div class="seg">${a[3].map(s=>`<label><input type="radio" name="subitem" value="${s}"> ${s}${a[0]!=='contratos'?(s==='Consulta'?' (dúvida, orientação)':' (já existe processo ou reclamação formal)'):(s==='Análise'?' (revisar um contrato recebido)':' (redigir um contrato novo)')}</label>`).join('')}</div><span class="ferr" id="e-subitem"></span>`}
+$('topics').addEventListener('change',()=>{$('e-assunto').textContent='';renderSub()});
 $('demoNote').hidden=!!ENDPOINT;
 let FILES=[];const MAXF=10,MAXB=20*1048576;
 const fmt=b=>b>1048576?(b/1048576).toLocaleString('pt-BR',{maximumFractionDigits:1})+' MB':Math.max(1,Math.round(b/1024))+' KB';
-function addFiles(fs){$('e-files').textContent='';for(const f of fs){if(FILES.length>=MAXF){$('e-files').textContent='Até 10 arquivos por solicitação.';break}if(f.size>MAXB){$('e-files').textContent=`"${f.name}" passa de 20 MB.`;continue}FILES.push(f)}renderFiles()}
+function addFiles(fs){$('e-files').textContent='';for(const f of fs){if(FILES.reduce((t,x)=>t+x.size,0)+f.size>30*1048576){$('e-files').textContent='O total de anexos passa de 30 MB. Envie os demais respondendo ao e-mail de confirmação.';break}if(FILES.length>=MAXF){$('e-files').textContent='Até 10 arquivos por solicitação.';break}if(f.size>MAXB){$('e-files').textContent=`"${f.name}" passa de 20 MB.`;continue}FILES.push(f)}renderFiles()}
 function renderFiles(){$('fileList').innerHTML=FILES.map((f,i)=>`<li><span>${esc(f.name)}</span><small style="color:var(--muted)">${fmt(f.size)}</small><button type="button" data-rm="${i}">Remover</button></li>`).join('')}
 $('files').addEventListener('change',e=>{addFiles(e.target.files);e.target.value=''});
 ['dragenter','dragover'].forEach(ev=>$('drop').addEventListener(ev,e=>{e.preventDefault();$('drop').classList.add('hover')}));
@@ -163,6 +168,7 @@ function val(){let ok=true;const req=[['nome','Informe seu nome.'],['area','Info
   for(const [id,m] of req){const v=$(id).value.trim();$('e-'+id).textContent=v?'':m;$(id).classList.toggle('err-on',!v);if(!v)ok=false}
   const em=$('email').value.trim();const emOk=/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em);$('e-email').textContent=emOk?'':'Informe um e-mail válido para receber o retorno.';$('email').classList.toggle('err-on',!emOk);if(!emOk)ok=false;
   const as=document.querySelector('input[name=assunto]:checked');$('e-assunto').textContent=as?'':'Escolha o assunto.';if(!as)ok=false;
+  const asd=as&&ASSUNTOS.find(x=>x[0]===as.value);if(asd&&asd[3]){const sb=document.querySelector('input[name=subitem]:checked');if(!sb){ok=false;if($('e-subitem'))$('e-subitem').textContent='Escolha uma opção.'}}
   $('e-lgpd').textContent=$('lgpd').checked?'':'É preciso autorizar o uso dos dados para atender o pedido.';if(!$('lgpd').checked)ok=false;
   return ok}
 const b64=f=>new Promise((ok,ko)=>{const r=new FileReader();r.onload=()=>ok(String(r.result).split(',')[1]||'');r.onerror=()=>ko(r.error);r.readAsDataURL(f)});
@@ -170,7 +176,7 @@ $('req').addEventListener('submit',async e=>{e.preventDefault();$('formErr').tex
   if(!val()){$('formErr').textContent='Confira os campos destacados.';const f=document.querySelector('.err-on,.ferr:not(:empty)');f&&f.scrollIntoView({behavior:'smooth',block:'center'});return}
   const btn=$('send');btn.disabled=true;btn.textContent='Enviando…';
   if($('site').value){btn.disabled=false;btn.textContent='Enviar solicitação';return}
-  const data={nome:$('nome').value.trim(),email:$('email').value.trim().toLowerCase(),area:$('area').value.trim(),telefone:$('tel').value.trim(),assunto:document.querySelector('input[name=assunto]:checked').value,titulo:$('titulo').value.trim(),descricao:$('desc').value.trim(),prazo:$('prazo').value,processo:$('proc').value.trim(),urgencia:document.querySelector('input[name=urg]:checked').value};
+  const data={nome:$('nome').value.trim(),email:$('email').value.trim().toLowerCase(),area:$('area').value.trim(),telefone:$('tel').value.trim(),assunto:document.querySelector('input[name=assunto]:checked').value,titulo:$('titulo').value.trim(),descricao:$('desc').value.trim(),prazo:$('prazo').value,processo:$('proc').value.trim(),urgencia:document.querySelector('input[name=urg]:checked').value,subitem:(document.querySelector('input[name=subitem]:checked')||{}).value||''};
   try{let proto;
     if(ENDPOINT){data.arquivos=[];for(const f of FILES){btn.textContent=`Enviando ${data.arquivos.length+1} de ${FILES.length} arquivos…`;data.arquivos.push({nome:f.name,tipo:f.type,base64:await b64(f)})}
       const r=await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)});const j=await r.json();if(!j.ok)throw new Error(j.erro||'falha');proto=j.protocolo}
