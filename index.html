@@ -70,6 +70,12 @@ aside h2{font-size:15px;margin:0 0 10px}
 .note{font-size:12.5px;color:var(--faint);margin:0}
 .demo{background:var(--amber-soft);color:var(--amber);border-radius:10px;padding:10px 14px;font-size:13.5px;margin-bottom:18px}
 .done{text-align:center;padding:36px 20px}
+.trk{list-style:none;margin:14px 0 18px;padding:0;display:flex;flex-wrap:wrap;gap:6px}.trk li{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);background:var(--surface-2);border-radius:999px;padding:4px 12px 4px 4px}
+.trk li span{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:#fff;border:1px solid var(--line);font-weight:700;font-size:11.5px}
+.trk li.ok{color:var(--accent)}.trk li.ok span{background:var(--accent-soft);border-color:transparent}.trk li.cur{color:var(--ink);font-weight:600;box-shadow:0 0 0 1.5px var(--accent)}.trk li.cur span{background:var(--accent);color:#fff;border-color:transparent}
+.thist{list-style:none;margin:8px 0 0;padding:0 0 0 14px;border-left:2px solid var(--line);display:grid;gap:10px;font-size:14px}.thist small{display:block;color:var(--muted);font-size:12.5px}
+#formCard a,aside .note a{color:var(--accent)}
+.toplink{display:inline-block;margin-top:14px;color:inherit;font-weight:600;text-decoration:underline;text-underline-offset:3px}
 .done .ok{width:56px;height:56px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;margin:0 auto 14px;font-size:28px;font-weight:800}
 .done h2{font-family:var(--display);font-weight:600;font-size:28px;margin:0 0 6px}
 .proto{display:inline-block;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:20px;font-weight:700;letter-spacing:.04em;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:8px 16px;margin:12px 0 16px;user-select:all}
@@ -86,6 +92,7 @@ footer{color:var(--faint);font-size:12.5px;padding-block:0 30px}
   <div class="logo"><div class="mark" aria-hidden="true">B</div><div><b>Bagaggio</b><span>Departamento Jurídico</span></div></div>
   <h1>Solicitações ao Jurídico</h1>
   <p class="lead">Contratos, notificações, Procon, trabalhista, locação de lojas e o que mais precisar. Preencha uma vez: o pedido chega direto à pessoa responsável pelo assunto, e você recebe o número de protocolo para acompanhar.</p>
+  <a class="toplink" href="?acompanhar">Já fez um pedido? Acompanhe o andamento →</a>
 </div></header>
 
 <main><div class="wrap">
@@ -140,7 +147,7 @@ footer{color:var(--faint);font-size:12.5px;padding-block:0 30px}
         <li><span><b>Considerações do jurídico</b>Você recebe por e-mail os riscos encontrados e as alterações sugeridas. Em contratos, depois dos ajustes, o seu gestor dá o ok e o contrato é liberado para assinatura.</span></li>
         <li><span><b>Retorno por e-mail</b>Cada etapa é avisada no e-mail informado, até a conclusão.</span></li>
       </ol></div>
-    <p class="note">Dúvidas: juridico@bagaggio.com.br</p>
+    <p class="note"><a href="?acompanhar">Acompanhar um pedido</a> · Dúvidas: juridico@bagaggio.com.br</p>
   </aside>
 </div></main>
 <footer><div class="wrap">Bagaggio · Departamento Jurídico</div></footer>
@@ -182,6 +189,7 @@ $('req').addEventListener('submit',async e=>{e.preventDefault();$('formErr').tex
   if(!val()){$('formErr').textContent='Confira os campos destacados.';const f=document.querySelector('.err-on,.ferr:not(:empty)');f&&f.scrollIntoView({behavior:'smooth',block:'center'});return}
   const btn=$('send');btn.disabled=true;btn.textContent='Enviando…';
   if($('site').value){btn.disabled=false;btn.textContent='Enviar solicitação';return}
+  try{localStorage.setItem('reqEmail',$('email').value.trim().toLowerCase())}catch(x){}
   const data={nome:$('nome').value.trim(),email:$('email').value.trim().toLowerCase(),gestorNome:$('gnome').value.trim(),gestorEmail:$('gemail').value.trim().toLowerCase(),area:$('area').value.trim(),telefone:$('tel').value.trim(),assunto:document.querySelector('input[name=assunto]:checked').value,titulo:$('titulo').value.trim(),descricao:$('desc').value.trim(),prazo:$('prazo').value,processo:$('proc').value.trim(),urgencia:document.querySelector('input[name=urg]:checked').value,subitem:(document.querySelector('input[name=subitem]:checked')||{}).value||''};
   try{let proto;
     if(ENDPOINT){data.arquivos=[];for(const f of FILES){btn.textContent=`Enviando ${data.arquivos.length+1} de ${FILES.length} arquivos…`;data.arquivos.push({nome:f.name,tipo:f.type,base64:await b64(f)})}
@@ -190,7 +198,7 @@ $('req').addEventListener('submit',async e=>{e.preventDefault();$('formErr').tex
     const nomeAs=ASSUNTOS.find(a=>a[0]===data.assunto)[1];
     $('formCard').innerHTML=`<div class="done"><div class="ok" aria-hidden="true">✓</div><h2>Solicitação enviada</h2><div class="proto">${esc(proto)}</div>
       <p>Guarde este número. A confirmação vai para <b>${esc(data.email)}</b>. O pedido sobre <b>${esc(nomeAs)}</b> já está com o responsável no jurídico. ${data.assunto==='contratos'?(data.gestorEmail?`Depois da análise e dos ajustes, <b>${esc(data.gestorNome)}</b> recebe o pedido de ok para liberar a assinatura.`:'Depois da análise e dos ajustes, você recebe o pedido de ok para liberar a assinatura.'):(data.gestorEmail?`<b>${esc(data.gestorNome)}</b> fica em cópia dos retornos.`:'')}</p>
-      <p>Se precisar complementar, responda ao e-mail de confirmação informando o protocolo.</p>${ENDPOINT?'':'<p class="note">Prévia: nada foi gravado.</p>'}
+      <p>Se precisar complementar, responda ao e-mail de confirmação informando o protocolo. Você pode <a href="?acompanhar&p=${encodeURIComponent(proto)}">acompanhar o andamento aqui</a>.</p>${ENDPOINT?'':'<p class="note">Prévia: nada foi gravado.</p>'}
       <button class="btn ghost" type="button" onclick="location.reload()">Fazer outra solicitação</button></div>`;
     window.scrollTo({top:0,behavior:'smooth'})}
   catch(err){btn.disabled=false;btn.textContent='Enviar solicitação';$('formErr').textContent='Não foi possível enviar agora. Confira sua conexão e tente de novo; se continuar, escreva para juridico@bagaggio.com.br.'}});
@@ -213,6 +221,39 @@ $('req').addEventListener('submit',async e=>{e.preventDefault();$('formErr').tex
       const r=await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({tipo:'assinado',protocolo:P,s:S,arquivos})});const j=await r.json();if(!j.ok)throw {srv:j.erro};
       $('formCard').innerHTML=`<div class="done"><div class="ok" aria-hidden="true">✓</div><h2>Contrato recebido</h2><div class="proto">${esc(P)}</div><p>Obrigado. O jurídico vai registrar a assinatura e finalizar a requisição. Você recebe a confirmação por e-mail.</p></div>`}
     catch(err){b.disabled=false;b.textContent='Finalizar requisição';$('ferr').textContent=err&&err.srv?err.srv:'Não foi possível enviar agora. Tente de novo ou responda ao e-mail do jurídico com o contrato anexado.'}});
+})();
+/* acompanhar pedido: ?acompanhar[&p=REQ-…] */
+(()=>{const q=new URLSearchParams(location.search);if(!q.has('acompanhar'))return;
+  const FL_C=[['recebida','Recebida'],['analise','Em análise'],['corrigindo','Ajustes no contrato'],['gestor','Ok do gestor'],['liberado','Liberado para assinatura'],['assinado','Assinado']];
+  const FL_S=[['recebida','Recebida'],['analise','Em análise'],['concluida','Concluída']];
+  const dt=v=>{if(!v)return'–';const s=String(v);const d=/^\d{4}-\d{2}-\d{2}$/.test(s)?new Date(s+'T12:00:00'):new Date(s);return isNaN(d)?s:d.toLocaleDateString('pt-BR')};
+  const dth=v=>{const d=new Date(v);return isNaN(d)?String(v||''):d.toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'})};
+  $('formCard').innerHTML=`<h2 style="margin:0 0 6px">Acompanhar pedido</h2><p style="margin:0 0 16px;color:var(--muted)">Informe o número do protocolo e o e-mail usado no pedido.</p>
+    <form id="trkF" novalidate><div class="grid2"><div class="f"><label class="l" for="tp">Protocolo</label><input id="tp" type="text" placeholder="REQ-2026-0001" autocomplete="off" style="text-transform:uppercase"></div>
+    <div class="f"><label class="l" for="te">E-mail corporativo</label><input id="te" type="email" inputmode="email" placeholder="nome.sobrenome@bagaggio.com.br" autocomplete="email"></div></div>
+    <div class="actions"><span class="formerr" id="terr" role="alert"></span><button class="btn" type="submit" id="tbtn">Consultar</button></div></form><div id="tres"></div>
+    <p style="margin:18px 0 0"><a href="./">← Fazer uma nova solicitação</a></p>`;
+  if(q.get('p'))$('tp').value=q.get('p');
+  try{const e=localStorage.getItem('reqEmail');if(e)$('te').value=e}catch(x){}
+  $('trkF').addEventListener('submit',async ev=>{ev.preventDefault();const p=$('tp').value.trim().toUpperCase(),e=$('te').value.trim().toLowerCase();$('terr').textContent='';$('tres').innerHTML='';
+    if(!/^REQ-\d{4}-\d{3,}$/.test(p)){$('terr').textContent='Confira o protocolo (ex.: REQ-2026-0001).';return}
+    if(!/^[^@\s]+@bagaggio\.com\.br$/.test(e)){$('terr').textContent='Use o e-mail corporativo informado no pedido.';return}
+    const b=$('tbtn');b.disabled=true;b.textContent='Consultando…';
+    try{const r=await fetch(ENDPOINT+'?acao=status&p='+encodeURIComponent(p)+'&e='+encodeURIComponent(e));const j=await r.json();
+      if(!j.ok){$('terr').textContent=j.erro||'Pedido não encontrado.';return}
+      try{localStorage.setItem('reqEmail',e)}catch(x){}
+      const F=j.contrato?FL_C:FL_S;const fim=['assinado','concluida'].includes(j.etapa);const canc=j.etapa==='cancelada';const i=F.findIndex(x=>x[0]===j.etapa);
+      $('tres').innerHTML=`<div style="border-top:1px solid var(--line);margin-top:18px;padding-top:18px">
+        <div style="font-size:13px;color:var(--muted)">${esc(j.protocolo)} · ${esc(j.assunto)}${j.subitem?' – '+esc(j.subitem):''}</div>
+        <h3 style="margin:4px 0 2px;font-size:20px">${esc(j.titulo)}</h3>
+        <p style="margin:0;font-size:15px">Situação: <b>${esc(canc?'Cancelado':j.etapaTexto)}</b></p>
+        ${canc?'':`<ol class="trk">${F.map(([k,l],n)=>`<li class="${n<i||fim?'ok':n===i?'cur':''}"><span>${n<i||fim?'✓':n+1}</span>${l}</li>`).join('')}</ol>`}
+        <p style="margin:0 0 4px;font-size:14px;color:var(--muted)">Recebido em ${dt(j.recebidoEm)} · Prazo do jurídico: ${dt(j.prazoJuridico)}${j.responsavel?' · Responsável: '+esc(j.responsavel):''}</p>
+        ${(j.hist||[]).length?`<ul class="thist" style="margin-top:14px">${j.hist.slice().reverse().map(h=>`<li><small>${dth(h.em)}</small>${esc(h.texto)}</li>`).join('')}</ul>`:''}
+        <p style="font-size:12.5px;color:var(--muted);margin:16px 0 0">O andamento é atualizado de hora em hora. Os detalhes de cada etapa chegam no seu e-mail.</p></div>`}
+    catch(err){$('terr').textContent='Não foi possível consultar agora. Tente de novo em instantes.'}
+    finally{b.disabled=false;b.textContent='Consultar'}});
+  if(q.get('p')&&$('te').value)$('trkF').requestSubmit();
 })();
 </script>
 
