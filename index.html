@@ -193,6 +193,26 @@ $('req').addEventListener('submit',async e=>{e.preventDefault();$('formErr').tex
       <button class="btn ghost" type="button" onclick="location.reload()">Fazer outra solicitação</button></div>`;
     window.scrollTo({top:0,behavior:'smooth'})}
   catch(err){btn.disabled=false;btn.textContent='Enviar solicitação';$('formErr').textContent='Não foi possível enviar agora. Confira sua conexão e tente de novo; se continuar, escreva para juridico@bagaggio.com.br.'}});
+
+/* envio do contrato assinado: ?finalizar=REQ-AAAA-NNNN&s=assinatura (link enviado por e-mail na liberação para assinatura) */
+(()=>{const q=new URLSearchParams(location.search);const P=q.get('finalizar'),S=q.get('s');if(!P||!S)return;let FF=[];
+  $('formCard').innerHTML=`<h2 style="margin:0 0 6px">Enviar contrato assinado</h2><p style="margin:0 0 16px;color:var(--muted)">Requisição <b>${esc(P)}</b>. Anexe a cópia do contrato assinado para finalizar a requisição.</p>
+    <label class="drop" id="fdrop" tabindex="0"><input type="file" id="ffiles" multiple hidden accept=".pdf,.png,.jpg,.jpeg,.webp,.heic"><span>Arraste o arquivo aqui ou <b>clique para escolher</b><br><small style="color:var(--muted)">PDF ou fotos · até 20 MB cada</small></span></label>
+    <ul class="files" id="flist"></ul><p class="ferr" id="ferr"></p>
+    <button class="btn" id="fsend" type="button">Finalizar requisição</button>`;
+  const rd=()=>{$('flist').innerHTML=FF.map((f,i)=>`<li><span>${esc(f.name)}</span><small style="color:var(--muted)">${fmt(f.size)}</small><button type="button" data-frm="${i}">Remover</button></li>`).join('')};
+  const ad=fs=>{$('ferr').textContent='';for(const f of fs){if(f.size>MAXB){$('ferr').textContent=`"${f.name}" passa de 20 MB.`;continue}if(!/\.(pdf|png|jpe?g|webp|heic)$/i.test(f.name)){$('ferr').textContent='Envie PDF ou foto.';continue}if(FF.length<5)FF.push(f)}rd()};
+  $('ffiles').addEventListener('change',e=>{ad(e.target.files);e.target.value=''});
+  ['dragenter','dragover'].forEach(ev=>$('fdrop').addEventListener(ev,e=>{e.preventDefault();$('fdrop').classList.add('hover')}));
+  ['dragleave','drop'].forEach(ev=>$('fdrop').addEventListener(ev,e=>{e.preventDefault();$('fdrop').classList.remove('hover')}));
+  $('fdrop').addEventListener('drop',e=>ad(e.dataTransfer.files));$('fdrop').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();$('ffiles').click()}});
+  $('flist').addEventListener('click',e=>{const b=e.target.closest('[data-frm]');if(b){FF.splice(+b.dataset.frm,1);rd()}});
+  $('fsend').addEventListener('click',async()=>{if(!FF.length){$('ferr').textContent='Anexe a cópia do contrato assinado.';return}const b=$('fsend');b.disabled=true;
+    try{const arquivos=[];for(const f of FF){b.textContent=`Enviando ${arquivos.length+1} de ${FF.length}…`;arquivos.push({nome:f.name,tipo:f.type,base64:await b64(f)})}
+      const r=await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({tipo:'assinado',protocolo:P,s:S,arquivos})});const j=await r.json();if(!j.ok)throw {srv:j.erro};
+      $('formCard').innerHTML=`<div class="done"><div class="ok" aria-hidden="true">✓</div><h2>Contrato recebido</h2><div class="proto">${esc(P)}</div><p>Obrigado. O jurídico vai registrar a assinatura e finalizar a requisição. Você recebe a confirmação por e-mail.</p></div>`}
+    catch(err){b.disabled=false;b.textContent='Finalizar requisição';$('ferr').textContent=err&&err.srv?err.srv:'Não foi possível enviar agora. Tente de novo ou responda ao e-mail do jurídico com o contrato anexado.'}});
+})();
 </script>
 
 </body>
