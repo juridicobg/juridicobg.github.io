@@ -255,6 +255,42 @@ $('req').addEventListener('submit',async e=>{e.preventDefault();$('formErr').tex
     finally{b.disabled=false;b.textContent='Consultar'}});
   if(q.get('p')&&$('te').value)$('trkF').requestSubmit();
 })();
+/* links dos e-mails: ?arquivo= (anexo), ?iniciar= (iniciar análise), ?decidir= (ok do gestor). Consultam o script sem o login Google do navegador */
+(()=>{const q=new URLSearchParams(location.search);const S_=q.get('s');const modo=q.has('arquivo')?'arquivo':q.has('iniciar')?'iniciar':q.has('decidir')?'decidir':null;if(!modo||!S_)return;
+  const card=$('formCard');const api=async o=>{const u=new URLSearchParams({fmt:'json',...o,s:S_});const r=await fetch(ENDPOINT+'?'+u);return r.json()};
+  const msg=(t,sub)=>{card.innerHTML=`<div class="done"><h2>${t}</h2>${sub?`<p>${sub}</p>`:''}</div>`};
+  const resumo=i=>`<div style="font-size:13px;color:var(--muted)">${esc(i.protocolo)} · ${esc(i.assunto)}${i.subitem?' – '+esc(i.subitem):''}</div><h3 style="margin:4px 0 6px;font-size:20px">${esc(i.titulo)}</h3>
+    <p style="margin:0 0 8px;font-size:14px;color:var(--muted)">Solicitante: ${esc(i.solicitante)}${i.area?' ('+esc(i.area)+')':''}${i.gestor?' · Gestor: '+esc(i.gestor):''}</p>
+    ${i.descricao?`<div style="white-space:pre-wrap;background:var(--surface-2);border-radius:10px;padding:12px;font-size:14px;margin:0 0 16px">${esc(i.descricao)}</div>`:''}`;
+  const fail=e=>msg('Não foi possível abrir',esc(e||'Tente de novo em instantes ou escreva para juridico@bagaggio.com.br.'));
+  card.innerHTML='<p style="color:var(--muted)">Carregando…</p>';
+  document.querySelector('header .lead')&&(document.querySelector('header .lead').hidden=true);document.querySelector('.toplink')&&(document.querySelector('.toplink').hidden=true);
+  if(modo==='arquivo'){(async()=>{try{const j=await api({acao:'arquivo',id:q.get('arquivo')});if(!j.ok)return fail(j.erro);
+      const bin=atob(j.base64);const u8=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u8[i]=bin.charCodeAt(i);const url=URL.createObjectURL(new Blob([u8],{type:j.tipo}));
+      card.innerHTML=`<h2 style="margin:0 0 12px;word-break:break-word">${esc(j.nome)}</h2><p><a class="btn" href="${url}" download="${esc(j.nome)}" style="text-decoration:none;display:inline-block">Baixar arquivo</a></p>
+        ${j.tipo.startsWith('image/')?`<img src="${url}" alt="" style="max-width:100%;border-radius:10px">`:j.tipo==='application/pdf'?`<iframe src="${url}" style="width:100%;height:75vh;border:1px solid var(--line);border-radius:10px"></iframe>`:'<p style="color:var(--muted)">Pré-visualização indisponível para este tipo de arquivo. Use "Baixar arquivo".</p>'}`}catch(e){fail()}})();return}
+  if(modo==='iniciar'){const P=q.get('iniciar');const go=async(quem)=>{card.innerHTML='<p style="color:var(--muted)">Registrando…</p>';try{const j=await api({acao:'iniciar',p:P,quem,confirma:'1'});if(!j.ok)return fail(j.erro);
+        if(j.feito)card.innerHTML=resumo(j.info)+`<div class="done" style="padding:10px 0"><div class="ok">✓</div><h2>Análise iniciada</h2><p><b>${esc(j.por)}</b> assumiu o pedido. A requisição passa para "Em análise" no Painel de processos na próxima sincronização.</p></div>`;
+        else render(j)}catch(e){fail()}};
+    const render=j=>{if(j.ja){card.innerHTML=resumo(j.info)+`<p style="font-size:15px"><b>Análise já iniciada</b> por ${esc(j.ja.por)} em ${new Date(j.ja.em).toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'})}.</p>`;return}
+      card.innerHTML=resumo(j.info)+`<p style="font-weight:600;margin:0 0 10px">Quem vai analisar?</p><div style="display:flex;flex-wrap:wrap;gap:8px">${j.time.map(t=>`<button class="btn" type="button" data-quem="${esc(t.email)}">${esc(t.nome)}</button>`).join('')}</div>`;
+      card.querySelectorAll('[data-quem]').forEach(b=>b.onclick=()=>go(b.dataset.quem))};
+    (async()=>{try{const j=await api({acao:'iniciar',p:P});if(!j.ok)return fail(j.erro);render(j)}catch(e){fail()}})();return}
+  if(modo==='decidir'){const P=q.get('decidir');
+    const go=async(c,motivo)=>{card.innerHTML='<p style="color:var(--muted)">Registrando…</p>';try{const j=await api({acao:'decidir',p:P,confirma:c,motivo:motivo||''});if(!j.ok)return fail(j.erro);
+        if(j.feito)card.innerHTML=resumo(j.info)+`<div class="done" style="padding:10px 0"><div class="ok">✓</div><h2>${j.feito==='aprovado'?'Assinatura liberada':'Contrato devolvido para ajustes'}</h2><p>${j.feito==='aprovado'?'Obrigado. O jurídico e o solicitante serão avisados de que o contrato pode ser assinado.':'O jurídico e o solicitante serão avisados para seguir com os ajustes.'}</p></div>`;
+        else render(j)}catch(e){fail()}};
+    const render=j=>{const par=j.parecer?`<p style="font-weight:600;margin:0 0 6px">Considerações do jurídico</p><div style="white-space:pre-wrap;border:1px solid var(--line);border-radius:10px;padding:12px;font-size:14px;margin:0 0 16px">${esc(j.parecer)}</div>`:'';
+      if(j.estado==='analise'){card.innerHTML=resumo(j.info)+'<p>O jurídico ainda não concluiu a análise. Você vai receber um novo e-mail quando o contrato estiver pronto para a sua liberação.</p>';return}
+      if(j.estado!=='pendente'){card.innerHTML=resumo(j.info)+par+`<p style="font-size:15px"><b>${j.estado==='aprovado'?'Assinatura já liberada.':'Contrato já devolvido para ajustes.'}</b></p>`;return}
+      card.innerHTML=resumo(j.info)+par+`<p>O jurídico concluiu a análise. Com o seu ok, o contrato fica liberado para assinatura.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:flex-start"><button class="btn" type="button" id="dOk">Liberar para assinatura</button>
+        <details style="flex:1;min-width:240px"><summary style="cursor:pointer;color:#B23427;font-weight:600;padding:12px 0">Não liberar ainda</summary>
+        <textarea id="dMot" placeholder="O que precisa mudar antes de assinar (opcional)" style="width:100%;min-height:80px;margin:8px 0;border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit"></textarea>
+        <button class="btn" type="button" id="dNo" style="background:#B23427">Devolver para ajustes</button></details></div>`;
+      $('dOk').onclick=()=>go('aprovar');$('dNo').onclick=()=>go('recusar',$('dMot').value.trim())};
+    (async()=>{try{const j=await api({acao:'decidir',p:P});if(!j.ok)return fail(j.erro);render(j)}catch(e){fail()}})();return}
+})();
 </script>
 
 </body>
