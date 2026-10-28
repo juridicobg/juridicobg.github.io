@@ -109,7 +109,7 @@ footer{color:var(--faint);font-size:12.5px;padding-block:0 30px}
           <div class="f"><label class="l" for="tel">Telefone ou WhatsApp <small>(opcional)</small></label><input type="tel" id="tel" autocomplete="tel" inputmode="tel" placeholder="(21) 9 0000-0000"></div>
           <div class="f"><label class="l" for="gnome">Gestor <small>(diretor ou gerente · opcional)</small></label><input type="text" id="gnome" placeholder="Nome e sobrenome"><span class="ferr" id="e-gnome"></span></div>
           <div class="f"><label class="l" for="gemail">E-mail do gestor <small>(opcional)</small></label><input type="email" id="gemail" inputmode="email" placeholder="nome.sobrenome@bagaggio.com.br"><span class="ferr" id="e-gemail"></span></div>
-          <p class="note full" style="margin:-4px 0 0;font-size:12.5px;color:var(--muted)">Em contratos, o gestor recebe as considerações do jurídico e dá o ok final para a assinatura; a análise começa logo, sem esperar por ele. Se você é o próprio gestor (diretor ou gerente), deixe em branco: o ok final será seu.</p>
+          <p class="note full" style="margin:-4px 0 0;font-size:12.5px;color:var(--muted)">O gestor recebe um aviso do pedido para ciência. Em contratos, ele também recebe as considerações do jurídico e dá o ok final para a assinatura; a análise começa logo, sem esperar por ele. Se você é o próprio gestor (diretor ou gerente), deixe em branco: o ok final será seu.</p>
         </div>
       </fieldset>
 
@@ -125,8 +125,9 @@ footer{color:var(--faint);font-size:12.5px;padding-block:0 30px}
           <div class="f full"><label class="l" for="desc">Explique o que precisa</label><textarea id="desc" placeholder="Contexto, o que aconteceu, quem são as partes, o que você espera do jurídico." required></textarea><span class="ferr" id="e-desc"></span></div>
           <div class="f"><label class="l" for="prazo">Para quando precisa <small>(opcional)</small></label><input type="date" id="prazo"></div>
           <div class="f"><label class="l" for="proc">Nº de processo, notificação ou protocolo <small>(se houver)</small></label><input type="text" id="proc" placeholder="0000000-00.0000.0.00.0000"></div>
-          <div class="f full"><span class="l" style="font-size:13.5px;font-weight:600">Urgência</span>
-            <div class="seg"><label><input type="radio" name="urg" value="normal" checked> Normal (até 4 dias úteis)</label><label><input type="radio" name="urg" value="alta"> Alta (até 4 dias úteis)</label><label><input type="radio" name="urg" value="urgente"> Urgente (prazo em até 48 h)</label></div></div>
+          <div class="f full">
+            <div class="seg"><label><input type="radio" name="urg" value="normal" checked> Normal (até 4 dias úteis)</label><label><input type="radio" name="urg" value="alta"> Alta (até 4 dias úteis)</label><label><input type="radio" name="urg" value="urgente"> Urgente (prazo em até 48 h)</label></div>
+            <p class="note" style="margin:8px 0 0;font-size:12.5px;color:var(--muted)">Somente marcar urgente quando a urgência for estritamente justificada, a fim de não atrapalhar o fluxo das demais requisições. Se, ao final, se constatar que não era caso de urgência, seu gestor será comunicado.</p></div>
         </div>
       </fieldset>
 
