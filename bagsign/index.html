@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Bag Sign</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&family=Caveat:wght@600&family=Dancing+Script:wght@600&family=Homemade+Apple&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14213d; --ink-2:#22325a; --gold:#c9a227; --gold-soft:#f4ead0;
+    --paper:#f6f4ef; --card:#ffffff; --line:#e4e0d6; --muted:#6b6b6b; --text:#1d1d1f;
+    --ok:#2f7d4f; --ok-soft:#e5f2ea; --run:#a86a10; --run-soft:#fbf0dc;
+    --bad:#b42318; --bad-soft:#fbe9e7; --off:#6b7280; --off-soft:#eef0f2;
+    --radius:12px; --shadow:0 1px 2px rgba(20,33,61,.06),0 8px 24px rgba(20,33,61,.06);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--paper);color:var(--text);font:15px/1.5 Manrope,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  button,input,select,textarea{font:inherit;color:inherit}
+  h1,h2,h3{font-family:Fraunces,Georgia,serif;font-weight:600;color:var(--ink);margin:0;letter-spacing:-.01em}
+  a{color:var(--ink)}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+  .topbar{background:var(--ink);color:#fff;position:sticky;top:0;z-index:20}
+  .topbar .wrap{display:flex;align-items:center;gap:14px;height:62px}
+  .brand{display:flex;align-items:center;gap:10px;font-family:Fraunces,serif;font-size:18px;font-weight:600;letter-spacing:.01em}
+  .brand-mark{width:30px;height:30px;border-radius:8px;background:var(--gold);display:grid;place-items:center;color:var(--ink)}
+  .brand-mark svg{width:18px;height:18px}
+  .topbar .spacer{flex:1}
+  .topbar .who{font-size:13px;opacity:.8}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid transparent;border-radius:9px;padding:10px 16px;font-weight:600;cursor:pointer;transition:.15s;white-space:nowrap;background:none}
+  .btn svg{width:17px;height:17px}
+  .btn-primary{background:var(--gold);color:var(--ink)}
+  .btn-primary:hover{filter:brightness(1.05)}
+  .btn-ink{background:var(--ink);color:#fff}
+  .btn-ink:hover{background:var(--ink-2)}
+  .btn-ghost{border-color:var(--line);background:#fff;color:var(--ink)}
+  .btn-ghost:hover{border-color:#cfc9bb}
+  .btn-ghost-dark{border-color:rgba(255,255,255,.25);color:#fff}
+  .btn-ghost-dark:hover{background:rgba(255,255,255,.08)}
+  .btn-danger{color:var(--bad);border-color:#efc9c4;background:#fff}
+  .btn-sm{padding:6px 11px;font-size:13px;border-radius:8px}
+  .btn[disabled]{opacity:.55;cursor:not-allowed}
+  .btn-block{width:100%}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+  .muted{color:var(--muted)}
+  .small{font-size:13px}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;word-break:break-all}
+  label.f{display:block;font-size:13px;font-weight:600;color:var(--ink);margin:0 0 6px}
+  .in{width:100%;border:1px solid var(--line);background:#fff;border-radius:9px;padding:10px 12px;outline:none;transition:.15s}
+  .in:focus{border-color:var(--ink);box-shadow:0 0 0 3px rgba(20,33,61,.08)}
+  textarea.in{resize:vertical;min-height:78px}
+  .field{margin-bottom:14px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;white-space:nowrap}
+  .badge::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+  .st-run{color:var(--run);background:var(--run-soft)}
+  .st-ok{color:var(--ok);background:var(--ok-soft)}
+  .st-bad{color:var(--bad);background:var(--bad-soft)}
+  .st-off{color:var(--off);background:var(--off-soft)}
+  .center-screen{min-height:100vh;display:grid;place-items:center;padding:24px}
+  .login{width:100%;max-width:400px;padding:34px}
+  .login .brand{color:var(--ink);margin-bottom:22px}
+  .spinner{width:28px;height:28px;border:3px solid var(--line);border-top-color:var(--ink);border-radius:50%;animation:spin .8s linear infinite}
+  .btn .spinner{width:16px;height:16px;border-width:2px;border-color:rgba(0,0,0,.15);border-top-color:currentColor}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .loading{display:flex;flex-direction:column;align-items:center;gap:14px;padding:60px 0;color:var(--muted)}
+  /* dashboard */
+  .page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin:30px 0 20px;flex-wrap:wrap}
+  .page-head h1{font-size:30px}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
+  .stat{padding:16px 18px}
+  .stat .n{font-family:Fraunces,serif;font-size:30px;font-weight:600;color:var(--ink);line-height:1.1}
+  .stat .l{font-size:12.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+  .stat.active{outline:2px solid var(--ink)}
+  .stat{cursor:pointer;text-align:left}
+  .toolbar{display:flex;gap:10px;margin-bottom:12px}
+  .toolbar .in{max-width:360px}
+  .list{overflow:hidden}
+  .row{display:grid;grid-template-columns:minmax(0,2.4fr) minmax(0,1.3fr) 150px 130px;gap:16px;align-items:center;padding:15px 18px;border-bottom:1px solid var(--line);cursor:pointer;background:none;border-left:0;border-right:0;border-top:0;width:100%;text-align:left}
+  .row:last-child{border-bottom:0}
+  .row:hover{background:#fbfaf7}
+  .row .t{font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .row .s{font-size:12.5px;color:var(--muted)}
+  .dots{display:flex;flex-wrap:wrap;gap:4px}
+  .dot{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:10.5px;font-weight:700;border:2px solid #fff;box-shadow:0 0 0 1px var(--line)}
+  .dot.assinado{background:var(--ok-soft);color:var(--ok)}
+  .dot.pendente{background:#f3f1ec;color:#8a8577}
+  .dot.recusado{background:var(--bad-soft);color:var(--bad)}
+  .prog{height:6px;border-radius:9px;background:#efece5;overflow:hidden}
+  .prog i{display:block;height:100%;background:var(--ok);border-radius:9px}
+  .empty{padding:56px 20px;text-align:center;color:var(--muted)}
+  .empty h3{margin-bottom:6px}
+  /* modal */
+  .overlay{position:fixed;inset:0;background:rgba(14,22,40,.55);z-index:50;display:flex;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto;animation:fade .15s}
+  @keyframes fade{from{opacity:0}}
+  .modal{width:100%;max-width:560px;background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.25);animation:pop .18s ease-out}
+  .modal.wide{max-width:860px}
+  @keyframes pop{from{transform:translateY(8px);opacity:0}}
+  .modal-h{display:flex;align-items:center;gap:12px;padding:20px 24px;border-bottom:1px solid var(--line)}
+  .modal-h h2{font-size:21px;flex:1;min-width:0}
+  .modal-b{padding:22px 24px}
+  .modal-f{display:flex;justify-content:flex-end;gap:10px;padding:16px 24px;border-top:1px solid var(--line);background:#fbfaf7;border-radius:0 0 16px 16px;flex-wrap:wrap}
+  .x{border:0;background:none;cursor:pointer;padding:6px;border-radius:8px;color:var(--muted)}
+  .x:hover{background:#f3f1ec}
+  .x svg{width:20px;height:20px;display:block}
+  .drop{border:2px dashed #d6d0c2;border-radius:12px;padding:26px;text-align:center;cursor:pointer;background:#fcfbf8;transition:.15s}
+  .drop:hover,.drop.over{border-color:var(--ink);background:#f7f5f0}
+  .drop svg{width:34px;height:34px;color:var(--ink)}
+  .file-chip{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:#fcfbf8}
+  .file-chip svg{width:26px;height:26px;color:var(--bad);flex:none}
+  .signer-row{display:grid;grid-template-columns:28px 1.3fr 1.4fr 1fr 1fr auto;gap:8px;align-items:center;margin-bottom:8px}
+  .num{width:26px;height:26px;border-radius:50%;background:var(--ink);color:#fff;font-size:12px;font-weight:700;display:grid;place-items:center}
+  .icon-btns{display:flex;gap:2px}
+  .ib{border:1px solid var(--line);background:#fff;border-radius:7px;width:30px;height:34px;display:grid;place-items:center;cursor:pointer;color:var(--muted)}
+  .ib:hover{color:var(--ink);border-color:#cfc9bb}
+  .ib svg{width:15px;height:15px}
+  .switch{display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none}
+  .switch input{display:none}
+  .switch .tr{width:40px;height:23px;border-radius:99px;background:#d9d4c8;position:relative;transition:.15s;flex:none}
+  .switch .tr::after{content:"";position:absolute;width:17px;height:17px;border-radius:50%;background:#fff;top:3px;left:3px;transition:.15s;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+  .switch input:checked+.tr{background:var(--ink)}
+  .switch input:checked+.tr::after{left:20px}
+  .section-t{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--gold);margin:22px 0 10px}
+  .section-t:first-child{margin-top:0}
+  .kv{display:grid;grid-template-columns:170px 1fr;gap:6px 14px;font-size:14px}
+  .kv dt{color:var(--muted);font-weight:600}
+  .kv dd{margin:0;min-width:0}
+  .srow{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--line)}
+  .srow:last-child{border-bottom:0}
+  .srow .info{flex:1;min-width:0}
+  .srow .nm{font-weight:700;color:var(--ink)}
+  .srow .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+  .timeline{position:relative;padding-left:20px}
+  .timeline::before{content:"";position:absolute;left:5px;top:6px;bottom:6px;width:2px;background:var(--line)}
+  .ev{position:relative;padding:0 0 12px}
+  .ev::before{content:"";position:absolute;left:-19px;top:6px;width:10px;height:10px;border-radius:50%;background:#fff;border:2px solid var(--ink)}
+  .ev.assinou::before,.ev.concluido::before{border-color:var(--ok);background:var(--ok)}
+  .ev.recusou::before,.ev.cancelado::before,.ev.expirado::before{border-color:var(--bad);background:var(--bad)}
+  .ev .d{font-size:12px;color:var(--muted)}
+  .ev .tx{font-size:13.5px}
+  .toast-box{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:100;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none}
+  .toast{background:var(--ink);color:#fff;padding:11px 18px;border-radius:10px;font-size:14px;box-shadow:0 8px 24px rgba(0,0,0,.25);animation:pop .2s;max-width:90vw}
+  .toast.err{background:var(--bad)}
+  .alert{padding:12px 14px;border-radius:10px;font-size:14px;margin-bottom:14px;display:flex;gap:10px;align-items:flex-start}
+  .alert svg{width:19px;height:19px;flex:none;margin-top:1px}
+  .alert.info{background:#eef2f9;color:var(--ink)}
+  .alert.ok{background:var(--ok-soft);color:#1f5a37}
+  .alert.warn{background:var(--run-soft);color:#7a4c08}
+  .alert.bad{background:var(--bad-soft);color:#8c1c13}
+  /* signer */
+  .doc-layout{display:grid;grid-template-columns:330px 1fr;gap:22px;margin:26px auto 120px;align-items:start}
+  .side{position:sticky;top:84px;padding:22px}
+  .side h1{font-size:23px;line-height:1.25;margin-bottom:6px;word-break:break-word}
+  .msg{background:var(--gold-soft);border-left:3px solid var(--gold);padding:10px 12px;border-radius:6px;font-size:14px;white-space:pre-wrap;margin:14px 0}
+  .plist{list-style:none;padding:0;margin:0}
+  .plist li{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}
+  .plist li:last-child{border-bottom:0}
+  .plist .st{margin-left:auto}
+  .integrity{display:flex;gap:8px;align-items:center;font-size:12.5px;color:var(--ok);margin-top:14px}
+  .integrity svg{width:16px;height:16px;flex:none}
+  .viewer{display:flex;flex-direction:column;gap:14px}
+  .pg{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.12),0 6px 20px rgba(20,33,61,.07);border-radius:4px;position:relative;overflow:hidden}
+  .pg canvas{display:block;width:100%;height:auto}
+  .pg .pn{position:absolute;right:8px;bottom:6px;font-size:11px;color:#999;background:rgba(255,255,255,.85);padding:1px 6px;border-radius:5px}
+  .actionbar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);box-shadow:0 -6px 24px rgba(20,33,61,.08);z-index:30;padding:14px 0 calc(14px + env(safe-area-inset-bottom))}
+  .actionbar .wrap{display:flex;align-items:center;gap:12px}
+  .actionbar .tx{flex:1;font-size:14px;min-width:0}
+  .steps{display:flex;gap:6px;margin-bottom:20px}
+  .steps i{flex:1;height:4px;border-radius:9px;background:#ebe7de}
+  .steps i.on{background:var(--ink)}
+  .code-in{font-size:28px;letter-spacing:12px;text-align:center;font-weight:700;padding:12px}
+  .tabs{display:flex;background:#f3f1ec;border-radius:10px;padding:4px;margin-bottom:12px}
+  .tabs button{flex:1;border:0;background:none;padding:8px;border-radius:8px;font-weight:600;cursor:pointer;color:var(--muted)}
+  .tabs button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+  .pad{position:relative;border:1px solid var(--line);border-radius:10px;background:#fff;touch-action:none}
+  .pad canvas{display:block;width:100%;height:190px;cursor:crosshair}
+  .pad .base{position:absolute;left:24px;right:24px;bottom:42px;border-bottom:1px dashed #cfc9bb;pointer-events:none}
+  .pad .hint{position:absolute;left:0;right:0;bottom:14px;text-align:center;font-size:12px;color:#aaa;pointer-events:none}
+  .pad .clr{position:absolute;top:8px;right:8px}
+  .typed{height:150px;border:1px solid var(--line);border-radius:10px;display:grid;place-items:center;font-size:46px;color:#1b2a59;background:#fff;overflow:hidden;padding:0 16px;text-align:center;line-height:1.1}
+  .fonts{display:flex;gap:8px;margin-top:8px}
+  .fonts button{flex:1;border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px;cursor:pointer;font-size:20px;color:#1b2a59}
+  .fonts button.on{border-color:var(--ink);box-shadow:0 0 0 2px rgba(20,33,61,.12)}
+  .check{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;margin-top:16px;cursor:pointer}
+  .check input{margin-top:3px;width:17px;height:17px;accent-color:var(--ink);flex:none}
+  .done-ic{width:68px;height:68px;border-radius:50%;background:var(--ok-soft);color:var(--ok);display:grid;place-items:center;margin:4px auto 16px}
+  .done-ic svg{width:36px;height:36px}
+  .verify-box{max-width:760px;margin:36px auto 80px}
+  .verify-box h1{font-size:30px;margin-bottom:6px}
+  .footer-note{text-align:center;font-size:12px;color:var(--muted);padding:30px 0}
+  @media (max-width:860px){
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .row{grid-template-columns:1fr auto;gap:8px}
+    .row .c-dots,.row .c-prog{display:none}
+    .doc-layout{grid-template-columns:1fr;margin-top:14px}
+    .side{position:static}
+    .signer-row{grid-template-columns:28px 1fr 1fr;}
+    .signer-row .icon-btns{grid-column:2/4;justify-content:flex-end}
+    .kv{grid-template-columns:1fr}
+    .kv dt{margin-top:6px}
+    .grid2{grid-template-columns:1fr}
+    .topbar .who{display:none}
+    .page-head h1{font-size:25px}
+  }
+
+  /* ---------- v2 ---------- */
+  .form-page{max-width:880px;margin:0 auto;padding:26px 20px 130px}
+  .form-page h1{font-size:28px;margin-bottom:4px}
+  .fsec{padding:22px 24px;margin-top:16px}
+  .fsec>h2{font-size:19px;margin-bottom:4px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .fsec>h2 .opt{font-family:Manrope,sans-serif;font-size:13px;font-weight:600;color:var(--muted)}
+  .fsec>h2 select,.fsec>h2 button{font-family:Manrope,sans-serif;font-size:13px;font-weight:600;letter-spacing:0}
+  .fsec .lead{font-size:13px;color:var(--muted);margin:0 0 14px}
+  .req{color:var(--bad)}
+  .doc-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fcfbf8;margin-bottom:8px}
+  .doc-row .ic{width:34px;height:34px;border-radius:8px;background:var(--bad-soft);color:var(--bad);display:grid;place-items:center;flex:none;font-size:10px;font-weight:800}
+  .doc-row .ic.cv{background:#eef2f9;color:var(--ink)}
+  .doc-row input.in{padding:7px 10px}
+  .doc-row .meta{font-size:12px;color:var(--muted);white-space:nowrap}
+  .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px;background:#f3f1ec;color:var(--ink);border:1px solid var(--line)}
+  .chip.gold{background:var(--gold-soft);border-color:#ead9a6}
+  .chip button{border:0;background:none;cursor:pointer;padding:0;color:var(--muted);display:flex}
+  .chip button svg{width:13px;height:13px}
+  .btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+  .btn-out{border:1px solid #e8c9b0;color:#a34d12;background:#fff}
+  .btn-out:hover{background:#fff7f1}
+  .btn-out.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .scard{display:flex;gap:12px;align-items:flex-start;padding:13px 14px;border:1px solid var(--line);border-radius:12px;margin-bottom:8px;background:#fff}
+  .scard .body{flex:1;min-width:0}
+  .scard .nm{font-weight:700;color:var(--ink)}
+  .scard .sub{font-size:12.5px;color:var(--muted);margin:2px 0 8px;word-break:break-word}
+  .sticky-foot{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);box-shadow:0 -6px 24px rgba(20,33,61,.08);z-index:30;padding:12px 0 calc(12px + env(safe-area-inset-bottom))}
+  .sticky-foot .in-wrap{max-width:880px;margin:0 auto;padding:0 20px;display:flex;gap:10px;justify-content:flex-end;align-items:center}
+  .sticky-foot .sum{flex:1;font-size:13px;color:var(--muted)}
+  .auth-opt{display:flex;gap:12px;align-items:flex-start;padding:12px;border:1px solid var(--line);border-radius:10px;margin-bottom:8px;cursor:pointer}
+  .auth-opt:hover{border-color:#cfc9bb}
+  .auth-opt input{margin-top:3px;width:17px;height:17px;accent-color:var(--ink);flex:none}
+  .auth-opt b{color:var(--ink)}
+  .auth-opt .d{font-size:12.5px;color:var(--muted)}
+  .auth-opt.dis{opacity:.55;cursor:not-allowed;background:#faf9f6}
+  .obs-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}
+  .obs-row:last-child{border-bottom:0}
+  .radio{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid var(--line);border-radius:10px;cursor:pointer;margin-bottom:8px}
+  .radio input{margin-top:4px;accent-color:var(--ink)}
+  .radio .d{font-size:12.5px;color:var(--muted)}
+  .doclist{list-style:none;margin:0;padding:0}
+  .doclist li{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;cursor:pointer;font-size:14px}
+  .doclist li:hover{background:#f7f5f0}
+  .doclist li.on{background:var(--gold-soft)}
+  .doclist li .ic{width:28px;height:28px;border-radius:7px;background:var(--bad-soft);color:var(--bad);display:grid;place-items:center;font-size:9px;font-weight:800;flex:none}
+  .evi{border:1px dashed #d6d0c2;border-radius:12px;padding:14px;margin-bottom:12px;background:#fcfbf8}
+  .evi h4{margin:0 0 4px;font-size:15px;color:var(--ink)}
+  .evi .d{font-size:12.5px;color:var(--muted);margin-bottom:10px}
+  .evi .prev{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  .evi .prev img{height:92px;border-radius:8px;border:1px solid var(--line);object-fit:cover;max-width:100%}
+  .evi .ok{color:var(--ok);font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px}
+  .cam{position:relative;background:#111;border-radius:12px;overflow:hidden}
+  .cam video{width:100%;display:block;max-height:340px;object-fit:cover;transform:scaleX(-1)}
+  .doc-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+  .doc-tabs button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;color:var(--ink)}
+  .doc-tabs button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .dl-list{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+  @media (max-width:860px){
+    .fsec{padding:18px 16px}
+    .doc-row{flex-wrap:wrap}
+    .doc-row input.in{flex:1 1 100%;order:3}
+  }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div class="toast-box" id="toasts"></div>
+
+<script type="module">
+/* =====================================================================
+   CONFIGURAÇÃO
+   API_URL: URL do App da Web do Apps Script (/exec) — ou do Cloudflare
+   Worker, se você instalou o intermediário para registrar o IP real.
+   ===================================================================== */
+const CONFIG = {
+  API_URL: 'https://script.google.com/macros/s/AKfycbw__5HQmnPXghhDnGxeAEzfQoC-DCq1QwZBKgWtqut21WOJLaYguMaxv03feKAZOjDzkA/exec',
+  BRAND: 'Bag Sign'
+};
+
+const PDFJS_BASE = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@6.2.108/build/';
+const PDFLIB_URL = 'https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.esm.min.js';
+
+/* ------------------------------------------------------------ ícones (estáticos) */
+const I = {
+  pen:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>',
+  plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+  x:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>',
+  up:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>',
+  down:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>',
+  trash:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>',
+  edit:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>',
+  upload:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M20 16v3a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3"/></svg>',
+  shield:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg>',
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
+  info:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>',
+  dl:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12M7 11l5 5 5-5"/><path d="M5 20h14"/></svg>',
+  copy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>',
+  mail:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>',
+  wa:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.7-5A8.5 8.5 0 1 1 8 19.3Z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1.2-1.4-2-1-1 .8a4 4 0 0 1-2.1-2.1l.8-1-1-2Z"/></svg>',
+  user:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>',
+  book:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5Z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/></svg>',
+  cam:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h3l2-3h8l2 3h3v12H3Z"/><circle cx="12" cy="13" r="4"/></svg>',
+  search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>'
+};
+const icon = (k) => h('span', { html: I[k], style: 'display:inline-flex' });
+
+/* ------------------------------------------------------------ utilidades */
+function h(tag, attrs, ...kids) {
+  const el = document.createElement(tag);
+  if (attrs) for (const [k, v] of Object.entries(attrs)) {
+    if (v === null || v === undefined || v === false) continue;
+    if (k === 'class') el.className = v;
+    else if (k === 'style') el.style.cssText = v;
+    else if (k === 'html') el.innerHTML = v;            // só conteúdo estático (ícones)
+    else if (k.startsWith('on')) el.addEventListener(k.slice(2), v);
+    else if (k === 'value') el.value = v;
+    else if (k === 'checked') el.checked = !!v;
+    else el.setAttribute(k, v === true ? '' : v);
+  }
+  for (const kid of kids.flat(Infinity)) {
+    if (kid === null || kid === undefined || kid === false) continue;
+    el.append(kid instanceof Node ? kid : document.createTextNode(String(kid)));
+  }
+  return el;
+}
+const $app = document.getElementById('app');
+const mount = (...n) => { $app.replaceChildren(...n.filter(Boolean)); window.scrollTo(0, 0); };
+
+function toast(msg, err) {
+  const t = h('div', { class: 'toast' + (err ? ' err' : '') }, msg);
+  document.getElementById('toasts').append(t);
+  setTimeout(() => t.remove(), err ? 5500 : 3200);
+}
+
+async function api(action, payload = {}) {
+  let res;
+  try { res = await fetch(CONFIG.API_URL, { method: 'POST', body: JSON.stringify({ action, ...payload }), redirect: 'follow' }); }
+  catch (e) { throw new Error('Sem conexão com o servidor. Verifique sua internet e tente novamente.'); }
+  let j;
+  try { j = await res.json(); } catch (e) { throw new Error('Resposta inválida do servidor.'); }
+  if (!j.ok) throw new Error(j.error || 'Erro inesperado.');
+  return j.data;
+}
+
+async function busy(btn, fn, label) {
+  const old = [...btn.childNodes];
+  btn.disabled = true;
+  btn.replaceChildren(h('span', { class: 'spinner' }), h('span', null, label || 'Aguarde…'));
+  try { return await fn(); }
+  catch (e) { toast(e.message, true); throw e; }
+  finally { btn.disabled = false; btn.replaceChildren(...old); }
+}
+
+let _client;
+async function clientInfo() {
+  if (!_client) {
+    let ip = '';
+    try {
+      const c = new AbortController(); const t = setTimeout(() => c.abort(), 3500);
+      const r = await fetch('https://api.ipify.org?format=json', { signal: c.signal });
+      clearTimeout(t); ip = (await r.json()).ip || '';
+    } catch (e) { ip = ''; }
+    _client = { ip, ua: navigator.userAgent };
+  }
+  return _client;
+}
+function getGeo() {
+  return new Promise((resolve) => {
+    if (!navigator.geolocation) return resolve('');
+    const done = setTimeout(() => resolve(''), 7000);
+    navigator.geolocation.getCurrentPosition(
+      (p) => { clearTimeout(done); resolve(p.coords.latitude.toFixed(5) + ', ' + p.coords.longitude.toFixed(5) + ' (±' + Math.round(p.coords.accuracy) + ' m)'); },
+      () => { clearTimeout(done); resolve(''); },
+      { enableHighAccuracy: false, timeout: 6500, maximumAge: 600000 });
+  });
+}
+
+const b64ToBytes = (b64) => { const s = atob(b64); const u = new Uint8Array(s.length); for (let i = 0; i < s.length; i++) u[i] = s.charCodeAt(i); return u; };
+const bytesToB64 = (u8) => { let s = ''; const ch = 0x8000; for (let i = 0; i < u8.length; i += ch) s += String.fromCharCode.apply(null, u8.subarray(i, i + ch)); return btoa(s); };
+const fileToDataUrl = (f) => new Promise((ok, bad) => { const r = new FileReader(); r.onload = () => ok(r.result); r.onerror = bad; r.readAsDataURL(f); });
+async function sha256(bytes) { const d = await crypto.subtle.digest('SHA-256', bytes); return [...new Uint8Array(d)].map(b => b.toString(16).padStart(2, '0')).join(''); }
+
+function brt(iso) {
+  if (!iso) return null;
+  const d = new Date(new Date(iso).getTime() - 3 * 3600e3);
+  const p = (n) => String(n).padStart(2, '0');
+  return { d: `${p(d.getUTCDate())}/${p(d.getUTCMonth() + 1)}/${d.getUTCFullYear()}`, t: `${p(d.getUTCHours())}:${p(d.getUTCMinutes())}:${p(d.getUTCSeconds())}` };
+}
+const fmtDT = (iso) => { const b = brt(iso); return b ? `${b.d} ${b.t}` : '—'; };
+const fmtD = (iso) => { const b = brt(iso); return b ? b.d : '—'; };
+const fmtYmd = (s) => s ? s.split('-').reverse().join('/') : '—';
+const todayBr = () => new Date(Date.now() - 3 * 3600e3).toISOString().slice(0, 10);
+const plusDays = (n) => new Date(Date.now() - 3 * 3600e3 + n * 86400e3).toISOString().slice(0, 10);
+const initials = (n) => String(n || '?').trim().split(/\s+/).filter(Boolean).map(w => w[0]).slice(0, 2).join('').toUpperCase();
+const digits = (v) => String(v || '').replace(/\D/g, '');
+function cpfValid(c) {
+  c = digits(c);
+  if (c.length !== 11 || /^(\d)\1{10}$/.test(c)) return false;
+  for (let t = 9; t < 11; t++) { let s = 0; for (let i = 0; i < t; i++) s += (+c[i]) * (t + 1 - i); if (((s * 10) % 11) % 10 !== +c[t]) return false; }
+  return true;
+}
+const fmtCpf = (c) => { const d = digits(c).slice(0, 11); let o = d.slice(0, 3); if (d.length > 3) o += '.' + d.slice(3, 6); if (d.length > 6) o += '.' + d.slice(6, 9); if (d.length > 9) o += '-' + d.slice(9, 11); return o; };
+const fmtPhone = (p) => { const d = digits(p); if (d.length < 10) return d; return `(${d.slice(0, 2)}) ${d.slice(2, d.length - 4)}-${d.slice(-4)}`; };
+function maskInput(el, fn) { el.addEventListener('input', () => { el.value = fn(el.value); }); return el; }
+const emailOk = (e) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(e || '').trim());
+
+const ROLES = [
+  ['parte', 'Parte'], ['contratante', 'Contratante'], ['contratado', 'Contratado(a)'], ['testemunha', 'Testemunha'],
+  ['fiador', 'Fiador(a)'], ['avalista', 'Avalista'], ['representante', 'Representante legal'], ['procurador', 'Procurador(a)'],
+  ['interveniente', 'Interveniente'], ['aprovador', 'Aprovador'], ['recebimento', 'Acusar recebimento'],
+  ['empregador', 'Empregador(a)'], ['empregado', 'Empregado(a)'], ['locador', 'Locador(a)'], ['locatario', 'Locatário(a)'],
+  ['comprador', 'Comprador(a)'], ['vendedor', 'Vendedor(a)'], ['cedente', 'Cedente'], ['cessionario', 'Cessionário(a)'],
+  ['credor', 'Credor(a)'], ['devedor', 'Devedor(a)'], ['prestador', 'Prestador(a) de serviços'], ['tomador', 'Tomador(a) de serviços'],
+  ['socio', 'Sócio(a)'], ['administrador', 'Administrador(a)'], ['responsavel', 'Responsável solidário(a)'], ['validador', 'Validador(a)']
+];
+const roleLabel = (k) => (ROLES.find(r => r[0] === k) || [, k])[1];
+const AUTHS = [
+  ['email', 'Token via e-mail', 'Código de 6 dígitos enviado ao e-mail do signatário. Sempre ativo.', true],
+  ['manuscrita', 'Assinatura manuscrita', 'A pessoa precisa desenhar a assinatura na tela (não pode apenas digitar o nome).'],
+  ['documento', 'Documento oficial', 'Foto do documento de identificação (RG, CNH) — frente obrigatória, verso opcional. Anexada ao manifesto.'],
+  ['selfie', 'Selfie com documento', 'Foto da pessoa segurando o documento ao lado do rosto, tirada na hora pela câmera. Anexada ao manifesto.'],
+  ['endereco', 'Comprovante de endereço', 'Envio de comprovante de residência (foto ou PDF). Anexado ao manifesto.']
+];
+const authLabel = (k) => (AUTHS.find(a => a[0] === k) || [, k])[1];
+const ENV_ST = {
+  em_andamento: ['Em andamento', 'st-run'], aguardando_finalizacao: ['Aguardando finalização', 'st-run'], finalizando: ['Gerando vias finais', 'st-run'],
+  concluido: ['Concluído', 'st-ok'], recusado: ['Recusado', 'st-bad'], cancelado: ['Cancelado', 'st-off'], expirado: ['Prazo encerrado', 'st-off']
+};
+const SIG_ST = { pendente: ['Pendente', 'st-run'], assinado: ['Assinou', 'st-ok'], recusado: ['Recusou', 'st-bad'] };
+const badge = (map, k) => { const [l, c] = map[k] || [k, 'st-off']; return h('span', { class: 'badge ' + c }, l); };
+
+function download(bytes, name, type = 'application/pdf') {
+  const url = URL.createObjectURL(new Blob([bytes], { type }));
+  const a = h('a', { href: url, download: name.replace(/[\\/:*?"<>|]+/g, '-') });
+  document.body.append(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 5000);
+}
+async function copy(text, msg) {
+  try { await navigator.clipboard.writeText(text); toast(msg || 'Copiado.'); }
+  catch (e) { window.prompt('Copie o texto abaixo:', text); }
+}
+function waLink(phone, text) {
+  let d = digits(phone); if (d.length <= 11) d = '55' + d;
+  return 'https://wa.me/' + d + '?text=' + encodeURIComponent(text);
+}
+
+function modal({ title, body, footer, wide, onClose, locked }) {
+  const close = () => { ov.remove(); document.removeEventListener('keydown', esc); onClose && onClose(); };
+  const esc = (e) => { if (e.key === 'Escape' && !locked) close(); };
+  const bodyEl = h('div', { class: 'modal-b' }, body);
+  const footEl = h('div', { class: 'modal-f' }, footer || []);
+  if (!footer) footEl.style.display = 'none';
+  const titleEl = h('h2', null, title);
+  const m = h('div', { class: 'modal' + (wide ? ' wide' : '') },
+    h('div', { class: 'modal-h' }, titleEl, h('button', { class: 'x', html: I.x, title: 'Fechar', onclick: close })), bodyEl, footEl);
+  const ov = h('div', { class: 'overlay', onmousedown: (e) => { if (e.target === ov && !locked) close(); } }, m);
+  document.body.append(ov);
+  document.addEventListener('keydown', esc);
+  return {
+    close, el: m,
+    setBody: (...n) => bodyEl.replaceChildren(...n),
+    setFooter: (...n) => { footEl.style.display = ''; footEl.replaceChildren(...n.filter(Boolean)); },
+    setTitle: (t) => { titleEl.textContent = t; }
+  };
+}
+
+const loadPdfLib = () => import(PDFLIB_URL);
+let _pdfjs;
+async function loadPdfjs() {
+  if (!_pdfjs) { _pdfjs = await import(PDFJS_BASE + 'pdf.min.mjs'); _pdfjs.GlobalWorkerOptions.workerSrc = PDFJS_BASE + 'pdf.worker.min.mjs'; }
+  return _pdfjs;
+}
+function topbar(right) {
+  return h('header', { class: 'topbar' }, h('div', { class: 'wrap' },
+    h('div', { class: 'brand' }, h('span', { class: 'brand-mark', html: I.pen }), CONFIG.BRAND), h('div', { class: 'spacer' }), right));
+}
+const loadingView = (txt) => h('div', { class: 'loading' }, h('div', { class: 'spinner' }), txt || 'Carregando…');
+
+/* ------------------------------------------------------------ conversões para PDF (no navegador) */
+function wa(s) {
+  return String(s ?? '').normalize('NFC').replace(/[‘’‚]/g, "'").replace(/[“”„]/g, '"')
+    .replace(/[–—−]/g, '-').replace(/…/g, '...').replace(/[   ]/g, ' ')
+    .replace(/\t/g, '    ').replace(/\r/g, '').replace(/[^\n\x20-\x7E\xA1-\xFF]/g, '?');
+}
+function loadImg(src) { return new Promise((ok, bad) => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => bad(new Error('Imagem inválida.')); i.src = src; }); }
+async function compressImage(fileOrUrl, max = 1600, q = 0.82) {
+  const url = typeof fileOrUrl === 'string' ? fileOrUrl : URL.createObjectURL(fileOrUrl);
+  const img = await loadImg(url);
+  const k = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+  const c = h('canvas', { width: Math.round(img.naturalWidth * k), height: Math.round(img.naturalHeight * k) });
+  const ctx = c.getContext('2d'); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, c.width, c.height);
+  ctx.drawImage(img, 0, 0, c.width, c.height);
+  if (typeof fileOrUrl !== 'string') URL.revokeObjectURL(url);
+  return c.toDataURL('image/jpeg', q);
+}
+async function imageToPdf(file) {
+  const { PDFDocument } = await loadPdfLib();
+  const jpg = b64ToBytes((await compressImage(file, 2200, 0.88)).split(',')[1]);
+  const doc = await PDFDocument.create();
+  const img = await doc.embedJpg(jpg);
+  const land = img.width > img.height;
+  const [W, H] = land ? [841.89, 595.28] : [595.28, 841.89];
+  const m = 28, sc = Math.min((W - 2 * m) / img.width, (H - 2 * m) / img.height);
+  doc.addPage([W, H]).drawImage(img, { x: (W - img.width * sc) / 2, y: (H - img.height * sc) / 2, width: img.width * sc, height: img.height * sc });
+  return await doc.save();
+}
+async function textToPdf(file) {
+  const { PDFDocument, StandardFonts, rgb } = await loadPdfLib();
+  const doc = await PDFDocument.create();
+  const font = await doc.embedFont(StandardFonts.Helvetica);
+  const W = 595.28, H = 841.89, M = 56, size = 10.5, lh = 15;
+  const lines = [];
+  for (const para of wa(await file.text()).split('\n')) {
+    let line = '';
+    for (const word of para.split(' ')) {
+      const t = line ? line + ' ' + word : word;
+      if (font.widthOfTextAtSize(t, size) <= W - 2 * M) line = t; else { lines.push(line); line = word; }
+    }
+    lines.push(line);
+  }
+  let page = null, y = 0;
+  for (const ln of lines) {
+    if (!page || y < M) { page = doc.addPage([W, H]); y = H - M; }
+    page.drawText(ln, { x: M, y: y - size, size, font, color: rgb(0.1, 0.1, 0.1) }); y -= lh;
+  }
+  if (!page) doc.addPage([W, H]);
+  return await doc.save();
+}
+async function pdfInfo(bytes) {
+  const { PDFDocument } = await loadPdfLib();
+  try { const d = await PDFDocument.load(bytes); return { pages: d.getPageCount() }; }
+  catch (e) { throw new Error(/encrypt/i.test(e.message) ? 'PDF protegido por senha não é aceito. Remova a proteção e envie novamente.' : 'Não foi possível ler este PDF.'); }
+}
+
+/* ------------------------------------------------------------ visualizador de PDF */
+async function renderPdf(container, bytes) {
+  container.replaceChildren(loadingView('Abrindo documento…'));
+  try {
+    const pdfjs = await loadPdfjs();
+    const pdf = await pdfjs.getDocument({ data: bytes.slice() }).promise;
+    container.replaceChildren();
+    const io = new IntersectionObserver((entries) => {
+      for (const en of entries) if (en.isIntersecting && !en.target._done) { en.target._done = true; draw(en.target); }
+    }, { rootMargin: '600px 0px' });
+    async function draw(el) {
+      const page = await pdf.getPage(el._n);
+      const vp1 = page.getViewport({ scale: 1 });
+      const vp = page.getViewport({ scale: (el.clientWidth / vp1.width) * Math.min(window.devicePixelRatio || 1, 2.5) });
+      const c = h('canvas', { width: Math.floor(vp.width), height: Math.floor(vp.height) });
+      await page.render({ canvas: c, canvasContext: c.getContext('2d'), viewport: vp }).promise;
+      el.querySelector('.ph')?.remove(); el.prepend(c);
+    }
+    for (let n = 1; n <= pdf.numPages; n++) {
+      const vp = (await pdf.getPage(n)).getViewport({ scale: 1 });
+      const el = h('div', { class: 'pg' }, h('div', { class: 'ph', style: `aspect-ratio:${vp.width}/${vp.height}` }), h('span', { class: 'pn' }, `${n} / ${pdf.numPages}`));
+      el._n = n; container.append(el); io.observe(el);
+    }
+  } catch (e) {
+    const url = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }));
+    container.replaceChildren(h('div', { class: 'card', style: 'padding:30px;text-align:center' },
+      h('p', null, 'Não foi possível exibir o documento neste navegador.'),
+      h('a', { class: 'btn btn-ink', href: url, target: '_blank', rel: 'noopener' }, 'Abrir PDF em nova aba')));
+  }
+}
+
+/* =====================================================================
+   PAINEL DO REMETENTE
+   ===================================================================== */
+const S = {
+  get key() { return sessionStorage.getItem('as_key') || ''; },
+  set key(v) { v ? sessionStorage.setItem('as_key', v) : sessionStorage.removeItem('as_key'); },
+  get sender() { return localStorage.getItem('as_sender') || ''; },
+  set sender(v) { localStorage.setItem('as_sender', v || ''); },
+  get senderEmail() { return localStorage.getItem('as_sender_email') || ''; },
+  set senderEmail(v) { localStorage.setItem('as_sender_email', v || ''); }
+};
+const adminApi = (action, p = {}) => api(action, { adminKey: S.key, sender: S.sender, ...p }).catch((e) => {
+  if (/Senha de acesso/.test(e.message)) { S.key = ''; renderLogin(); }
+  throw e;
+});
+
+function renderLogin() {
+  const key = h('input', { class: 'in', type: 'password', autocomplete: 'current-password', placeholder: '••••••••' });
+  const nm = h('input', { class: 'in', value: S.sender, placeholder: 'Ex.: Jurídico — Renan Malta' });
+  const em = h('input', { class: 'in', type: 'email', value: S.senderEmail, placeholder: 'seu.email@empresa.com.br' });
+  const btn = h('button', { class: 'btn btn-ink btn-block', type: 'submit' }, 'Entrar');
+  const form = h('form', {
+    onsubmit: async (e) => {
+      e.preventDefault();
+      if (!nm.value.trim()) return toast('Informe seu nome ou setor.', true);
+      if (!emailOk(em.value)) return toast('Informe seu e-mail.', true);
+      await busy(btn, async () => {
+        await api('adminLogin', { adminKey: key.value });
+        S.key = key.value; S.sender = nm.value.trim(); S.senderEmail = em.value.trim().toLowerCase();
+        renderDashboard();
+      }).catch(() => {});
+    }
+  },
+    h('div', { class: 'field' }, h('label', { class: 'f' }, 'Senha de acesso'), key),
+    h('div', { class: 'field' }, h('label', { class: 'f' }, 'Seu nome ou setor (aparece como remetente)'), nm),
+    h('div', { class: 'field' }, h('label', { class: 'f' }, 'Seu e-mail (usado em “Eu vou assinar”)'), em),
+    btn);
+  mount(h('div', { class: 'center-screen' }, h('div', null,
+    h('div', { class: 'card login' },
+      h('div', { class: 'brand' }, h('span', { class: 'brand-mark', html: I.pen }), CONFIG.BRAND),
+      h('h1', { style: 'font-size:24px;margin-bottom:4px' }, 'Painel do remetente'),
+      h('p', { class: 'muted small', style: 'margin:0 0 22px' }, 'Envie documentos para assinatura e acompanhe cada etapa.'),
+      form),
+    h('p', { class: 'footer-note' }, h('a', { href: '?v=' }, 'Verificar autenticidade de um documento')))));
+  setTimeout(() => key.focus(), 50);
+}
+
+let DASH = { list: [], filter: 'todos', q: '' };
+function dashTopbar() {
+  return topbar([
+    h('span', { class: 'who' }, S.sender),
+    h('button', { class: 'btn btn-primary btn-sm', onclick: renderNewEnvelope }, icon('plus'), 'Novo envelope'),
+    h('button', { class: 'btn btn-ghost-dark btn-sm', onclick: () => { S.key = ''; renderLogin(); } }, 'Sair')
+  ]);
+}
+
+async function renderDashboard() {
+  const content = h('main', { class: 'wrap' }, loadingView());
+  mount(dashTopbar(), content);
+  try { DASH.list = await adminApi('listEnvelopes'); }
+  catch (e) { content.replaceChildren(h('div', { class: 'alert bad', style: 'margin-top:30px' }, e.message)); return; }
+  drawDashboard(content);
+}
+
+function drawDashboard(content) {
+  const L = DASH.list;
+  const isOther = (e) => ['recusado', 'cancelado', 'expirado'].includes(e.status);
+  const isRun = (e) => ['em_andamento', 'aguardando_finalizacao', 'finalizando'].includes(e.status);
+  const stats = [['todos', 'Total', L.length], ['run', 'Em andamento', L.filter(isRun).length],
+    ['concluido', 'Concluídos', L.filter(e => e.status === 'concluido').length], ['outros', 'Recusados / cancelados', L.filter(isOther).length]];
+  const listEl = h('div', { class: 'card list' });
+  const search = h('input', { class: 'in', placeholder: 'Buscar por envelope, documento ou signatário…', value: DASH.q, oninput: () => { DASH.q = search.value; drawRows(); } });
+  function drawRows() {
+    const q = DASH.q.trim().toLowerCase();
+    const rows = L.filter(e => DASH.filter === 'todos' || (DASH.filter === 'outros' ? isOther(e) : DASH.filter === 'run' ? isRun(e) : e.status === DASH.filter))
+      .filter(e => !q || [e.name, ...e.documents.map(d => d.name), ...e.signers.map(s => s.name + ' ' + s.email)].join(' ').toLowerCase().includes(q));
+    if (!rows.length) {
+      listEl.replaceChildren(h('div', { class: 'empty' }, h('h3', null, L.length ? 'Nada encontrado' : 'Nenhum envelope ainda'),
+        h('p', null, L.length ? 'Ajuste a busca ou o filtro.' : 'Clique em “Novo envelope” para enviar o primeiro.'),
+        !L.length && h('button', { class: 'btn btn-primary', onclick: renderNewEnvelope }, icon('plus'), 'Novo envelope')));
+      return;
+    }
+    listEl.replaceChildren(...rows.map(e => {
+      const signed = e.signers.filter(s => s.status === 'assinado').length;
+      return h('button', { class: 'row', onclick: () => openDetail(e.id) },
+        h('div', { style: 'min-width:0' }, h('div', { class: 't' }, e.name),
+          h('div', { class: 's' }, `${e.documents.length} documento(s) · enviado em ${fmtD(e.createdAt)}${e.sender ? ' · ' + e.sender : ''} · prazo ${fmtYmd(e.deadline)}`)),
+        h('div', { class: 'dots c-dots' }, e.signers.map(s => h('span', { class: 'dot ' + s.status, title: `${s.name} — ${SIG_ST[s.status]?.[0] || s.status}` }, initials(s.name)))),
+        h('div', { class: 'c-prog' }, h('div', { class: 's', style: 'margin-bottom:5px' }, `${signed} de ${e.signers.length} assinaturas`),
+          h('div', { class: 'prog' }, h('i', { style: `width:${Math.round(signed / e.signers.length * 100)}%` }))),
+        h('div', { style: 'text-align:right' }, badge(ENV_ST, e.status)));
+    }));
+  }
+  drawRows();
+  content.replaceChildren(
+    h('div', { class: 'page-head' },
+      h('div', null, h('h1', null, 'Envelopes'), h('p', { class: 'muted', style: 'margin:4px 0 0' }, 'Acompanhe o andamento das assinaturas.')),
+      h('button', { class: 'btn btn-ghost', onclick: renderDashboard }, 'Atualizar')),
+    h('div', { class: 'stats' }, stats.map(([k, l, n]) => h('button', { class: 'card stat' + (DASH.filter === k ? ' active' : ''), onclick: () => { DASH.filter = k; drawDashboard(content); } },
+      h('div', { class: 'n' }, n), h('div', { class: 'l' }, l)))),
+    h('div', { class: 'toolbar' }, search), listEl);
+}
+
+/* ---------- novo envelope ---------- */
+const ACCEPT = '.pdf,.docx,.txt,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg,text/plain,application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+
+function renderNewEnvelope() {
+  const st = {
+    docs: [], signers: [], ordered: false, observers: [],
+    subject: '', message: '', deadline: plusDays(30), reminderDays: 3, finalize: 'auto', name: ''
+  };
+  const docsBox = h('div'), signersBox = h('div'), obsBox = h('div'), sumEl = h('span', { class: 'sum' });
+  const nameIn = h('input', { class: 'in', placeholder: 'Ex.: Documentos rescisórios — Fulana de Tal', oninput: (e) => { st.name = e.target.value; st.nameTouched = true; } });
+  const fileIn = h('input', { type: 'file', multiple: true, accept: ACCEPT, style: 'display:none', onchange: () => { addFiles([...fileIn.files]); fileIn.value = ''; } });
+
+  async function addFiles(files) {
+    for (const f of files) {
+      const ext = (f.name.split('.').pop() || '').toLowerCase();
+      if (!['pdf', 'docx', 'txt', 'png', 'jpg', 'jpeg'].includes(ext)) { toast(`${f.name}: formato não aceito.`, true); continue; }
+      if (f.size > 15 * 1048576) { toast(`${f.name}: acima de 15 MB.`, true); continue; }
+      const d = { name: f.name.replace(/\.[^.]+$/, ''), fileName: f.name, sourceType: ext === 'jpeg' ? 'jpg' : ext, bytes: null, pages: 0, busy: true };
+      st.docs.push(d); drawDocs();
+      try {
+        let bytes;
+        if (ext === 'pdf') bytes = new Uint8Array(await f.arrayBuffer());
+        else if (ext === 'png' || ext === 'jpg' || ext === 'jpeg') bytes = await imageToPdf(f);
+        else if (ext === 'txt') bytes = await textToPdf(f);
+        else bytes = b64ToBytes((await adminApi('convertDocx', { fileBase64: bytesToB64(new Uint8Array(await f.arrayBuffer())) })).pdfBase64);
+        d.pages = (await pdfInfo(bytes)).pages; d.bytes = bytes; d.busy = false;
+      } catch (e) { st.docs.splice(st.docs.indexOf(d), 1); toast(`${f.name}: ${e.message}`, true); }
+      if (!st.nameTouched && st.docs[0]) { st.name = st.docs[0].name; nameIn.value = st.name; }
+      drawDocs();
+    }
+  }
+  function drawDocs() {
+    const drop = h('div', { class: 'drop', onclick: () => fileIn.click() }, h('span', { html: I.upload }),
+      h('div', { style: 'font-weight:700;margin-top:6px;color:var(--ink)' }, 'Arraste e solte os documentos aqui ou clique para escolher'),
+      h('div', { class: 'small muted' }, 'Formatos aceitos: .pdf, .docx, .txt, .png, .jpg e .jpeg — até 15 MB cada'));
+    drop.addEventListener('dragover', (e) => { e.preventDefault(); drop.classList.add('over'); });
+    drop.addEventListener('dragleave', () => drop.classList.remove('over'));
+    drop.addEventListener('drop', (e) => { e.preventDefault(); drop.classList.remove('over'); addFiles([...e.dataTransfer.files]); });
+    docsBox.replaceChildren(...st.docs.map((d, i) => h('div', { class: 'doc-row' },
+      h('span', { class: 'ic' + (d.sourceType !== 'pdf' ? ' cv' : '') }, d.sourceType.toUpperCase()),
+      h('input', { class: 'in', value: d.name, oninput: (e) => d.name = e.target.value, title: 'Nome do documento' }),
+      h('span', { class: 'meta' }, d.busy ? (d.sourceType === 'docx' ? 'convertendo…' : 'processando…') : `${d.pages} pág.${d.sourceType !== 'pdf' ? ' · convertido p/ PDF' : ''}`),
+      !d.busy && d.sourceType !== 'pdf' && h('button', { class: 'btn btn-ghost btn-sm', onclick: () => previewPdf(d.bytes, d.name) }, 'Conferir'),
+      h('div', { class: 'icon-btns' },
+        h('button', { class: 'ib', title: 'Subir', html: I.up, onclick: () => { if (i) { [st.docs[i - 1], st.docs[i]] = [st.docs[i], st.docs[i - 1]]; drawDocs(); } } }),
+        h('button', { class: 'ib', title: 'Remover', html: I.trash, onclick: () => { st.docs.splice(i, 1); drawDocs(); } })))), drop, fileIn);
+    drawSum();
+  }
+  function drawSigners() {
+    signersBox.replaceChildren(
+      h('div', { class: 'btn-row' },
+        h('button', { class: 'btn btn-out btn-sm', onclick: () => editSigner({ name: S.sender.includes('—') ? '' : S.sender, email: S.senderEmail }) }, icon('user'), 'Eu vou assinar'),
+        h('button', { class: 'btn btn-out btn-sm', onclick: () => editSigner({}) }, icon('plus'), 'Signatário novo'),
+        h('button', { class: 'btn btn-out btn-sm', onclick: pickContact }, icon('book'), 'Signatário da agenda'),
+        h('button', { class: 'btn btn-out btn-sm' + (st.ordered ? ' on' : ''), disabled: st.signers.length < 2 && !st.ordered, onclick: () => { st.ordered = !st.ordered; drawSigners(); } }, '↓↑ ', st.ordered ? 'Ordem ativada' : 'Ordenar assinaturas')),
+      st.ordered && h('div', { class: 'alert info' }, h('span', { html: I.info }), h('div', null, 'Os signatários receberão o convite um de cada vez, na ordem abaixo.')),
+      ...st.signers.map((s, i) => h('div', { class: 'scard' },
+        st.ordered ? h('span', { class: 'num' }, i + 1) : h('span', { class: 'dot pendente' }, initials(s.name)),
+        h('div', { class: 'body' },
+          h('div', { class: 'nm' }, s.name),
+          h('div', { class: 'sub' }, `${roleLabel(s.role)} · ${s.email}${s.delivery === 'whatsapp' ? ' · WhatsApp ' + fmtPhone(s.phone) : ''}${s.cpf ? ' · CPF ' + s.cpf : (s.askCpf ? ' · CPF solicitado' : '')}`),
+          h('div', { class: 'chips' }, ['email', ...s.auths].map(a => h('span', { class: 'chip gold' }, authLabel(a))))),
+        h('div', { class: 'icon-btns' },
+          st.ordered && h('button', { class: 'ib', html: I.up, title: 'Subir', onclick: () => { if (i) { [st.signers[i - 1], st.signers[i]] = [st.signers[i], st.signers[i - 1]]; drawSigners(); } } }),
+          st.ordered && h('button', { class: 'ib', html: I.down, title: 'Descer', onclick: () => { if (i < st.signers.length - 1) { [st.signers[i + 1], st.signers[i]] = [st.signers[i], st.signers[i + 1]]; drawSigners(); } } }),
+          h('button', { class: 'ib', html: I.edit, title: 'Editar', onclick: () => editSigner(s, i) }),
+          h('button', { class: 'ib', html: I.trash, title: 'Remover', onclick: () => { st.signers.splice(i, 1); drawSigners(); } })))));
+    drawSum();
+  }
+  function editSigner(base, index) {
+    const s = { delivery: 'email', phone: '', email: '', name: '', cpf: '', birth: '', askCpf: true, role: 'parte', auths: [], saveContact: false, ...base };
+    s.auths = [...(s.auths || [])];
+    const delivery = h('select', { class: 'in', style: 'max-width:190px', onchange: (e) => { s.delivery = e.target.value; phoneWrap.style.display = s.delivery === 'whatsapp' ? '' : 'none'; } },
+      h('option', { value: 'email', selected: s.delivery === 'email' }, 'E-mail'), h('option', { value: 'whatsapp', selected: s.delivery === 'whatsapp' }, 'E-mail + WhatsApp'));
+    const email = h('input', { class: 'in', type: 'email', placeholder: 'Digite o e-mail', value: s.email });
+    const phone = maskInput(h('input', { class: 'in', inputmode: 'tel', placeholder: '(21) 99999-9999', value: fmtPhone(s.phone) }), fmtPhone);
+    const phoneWrap = h('div', { class: 'field', style: s.delivery === 'whatsapp' ? '' : 'display:none' }, h('label', { class: 'f' }, 'Celular (WhatsApp)'), phone,
+      h('div', { class: 'small muted', style: 'margin-top:4px' }, 'O convite continua indo por e-mail (o token também). Depois do envio, o painel abre o WhatsApp com a mensagem e o link prontos.'));
+    const save = h('input', { type: 'checkbox', checked: s.saveContact });
+    const chips = h('div', { class: 'chips' });
+    const drawChips = () => chips.replaceChildren(...['email', ...s.auths].map(a => h('span', { class: 'chip gold' }, authLabel(a),
+      a !== 'email' && h('button', { html: I.x, title: 'Remover', onclick: () => { s.auths = s.auths.filter(x => x !== a); drawChips(); } }))),
+      h('button', { class: 'btn btn-ghost btn-sm', onclick: chooseAuths }, icon('edit'), 'Alterar'));
+    function chooseAuths() {
+      const sel = new Set(s.auths);
+      const m2 = modal({
+        title: 'Selecionar autenticação',
+        body: [h('p', { class: 'small muted', style: 'margin-top:0' }, 'Escolha os pontos de autenticação exigidos deste signatário. Todos ficam registrados no manifesto.'),
+          ...AUTHS.map(([k, l, d, fixed]) => h('label', { class: 'auth-opt' + (fixed ? ' dis' : '') },
+            h('input', { type: 'checkbox', checked: fixed || sel.has(k), disabled: !!fixed, onchange: (e) => e.target.checked ? sel.add(k) : sel.delete(k) }),
+            h('div', null, h('b', null, l), h('div', { class: 'd' }, d)))),
+          h('p', { class: 'small muted' }, 'Token por SMS/WhatsApp, PIX, biometria facial e certificado digital dependem de serviços pagos de terceiros e não estão disponíveis.')],
+        footer: [h('button', { class: 'btn btn-ghost', onclick: () => m2.close() }, 'Voltar'),
+          h('button', { class: 'btn btn-ink', onclick: () => { s.auths = AUTHS.map(a => a[0]).filter(k => sel.has(k)); drawChips(); m2.close(); } }, 'Confirmar')]
+      });
+    }
+    drawChips();
+    const name = h('input', { class: 'in', placeholder: 'Nome completo', value: s.name });
+    const cpf = maskInput(h('input', { class: 'in', inputmode: 'numeric', placeholder: '000.000.000-00', value: s.cpf }), fmtCpf);
+    const birth = h('input', { class: 'in', type: 'date', value: s.birth, max: todayBr() });
+    const askCpf = h('input', { type: 'checkbox', checked: s.askCpf });
+    const role = h('select', { class: 'in' }, ROLES.map(([k, l]) => h('option', { value: k, selected: s.role === k }, l)));
+    const ok = h('button', { class: 'btn btn-ink' }, index === undefined ? 'Adicionar' : 'Salvar');
+    const m = modal({
+      title: index === undefined ? 'Adicionar signatário' : 'Editar signatário', wide: true,
+      body: [
+        h('label', { class: 'f' }, 'Envio'),
+        h('div', { style: 'display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px' }, delivery, h('div', { style: 'flex:1;min-width:220px' }, email),
+          h('label', { class: 'check', style: 'margin:0' }, save, h('span', null, 'Salvar na agenda'))),
+        phoneWrap,
+        h('div', { class: 'section-t' }, 'Autenticações'), chips,
+        h('div', { class: 'section-t' }, 'Dados adicionais'),
+        h('div', { class: 'field' }, h('label', { class: 'f' }, 'Nome completo'), name),
+        h('div', { class: 'grid2' },
+          h('div', { class: 'field' }, h('label', { class: 'f' }, 'CPF (opcional)'), cpf, h('label', { class: 'check', style: 'margin-top:8px' }, askCpf, h('span', null, 'Solicitar CPF ao signatário'))),
+          h('div', { class: 'field' }, h('label', { class: 'f' }, 'Data de nascimento (opcional)'), birth,
+            h('div', { class: 'small muted', style: 'margin-top:6px' }, 'Se preenchidos, CPF e nascimento precisam ser confirmados exatamente pelo signatário.'))),
+        h('div', { class: 'section-t' }, 'Assinar como'), role
+      ],
+      footer: [h('button', { class: 'btn btn-ghost', onclick: () => m.close() }, 'Cancelar'), ok]
+    });
+    ok.onclick = () => {
+      const v = { ...s, delivery: delivery.value, email: email.value.trim().toLowerCase(), phone: digits(phone.value), name: name.value.trim().replace(/\s+/g, ' '),
+        cpf: cpf.value, birth: birth.value, askCpf: askCpf.checked || !!cpf.value, role: role.value, saveContact: save.checked };
+      if (!emailOk(v.email)) return toast('E-mail inválido.', true);
+      if (v.name.split(' ').length < 2) return toast('Informe nome e sobrenome.', true);
+      if (v.cpf && !cpfValid(v.cpf)) return toast('CPF inválido.', true);
+      if (v.delivery === 'whatsapp' && v.phone.length < 10) return toast('Informe o celular com DDD.', true);
+      if (st.signers.some((x, j) => j !== index && x.email === v.email && x.role === v.role)) return toast('Este signatário já está na lista com o mesmo papel.', true);
+      if (index === undefined) st.signers.push(v); else st.signers[index] = v;
+      m.close(); drawSigners();
+    };
+    setTimeout(() => (s.email ? name : email).focus(), 60);
+  }
+  async function pickContact() {
+    const listEl = h('div', null, loadingView());
+    const q = h('input', { class: 'in', placeholder: 'Buscar na agenda…', style: 'margin-bottom:12px' });
+    const m = modal({ title: 'Signatário da agenda', body: [q, listEl] });
+    let contacts = [];
+    const draw = () => {
+      const t = q.value.trim().toLowerCase();
+      const f = contacts.filter(c => !t || (c.name + ' ' + c.email).toLowerCase().includes(t));
+      listEl.replaceChildren(...(f.length ? f.map(c => h('div', { class: 'srow' }, h('span', { class: 'dot pendente' }, initials(c.name)),
+        h('div', { class: 'info' }, h('div', { class: 'nm' }, c.name), h('div', { class: 'small muted' }, c.email + (c.cpf ? ' · CPF ' + c.cpf : ''))),
+        h('div', { class: 'acts' }, h('button', { class: 'btn btn-ink btn-sm', onclick: () => { m.close(); editSigner({ name: c.name, email: c.email, cpf: c.cpf, phone: c.phone }); } }, 'Usar'),
+          h('button', { class: 'ib', html: I.trash, title: 'Excluir da agenda', onclick: async () => { contacts = await adminApi('contacts', { op: 'delete', id: c.id }); draw(); } }))))
+        : [h('div', { class: 'empty', style: 'padding:24px' }, contacts.length ? 'Nenhum contato encontrado.' : 'A agenda está vazia. Marque “Salvar na agenda” ao adicionar um signatário.')]));
+    };
+    q.addEventListener('input', draw);
+    try { contacts = await adminApi('contacts', { op: 'list' }); draw(); } catch (e) { listEl.replaceChildren(h('div', { class: 'alert bad' }, e.message)); }
+  }
+
+  // mensagem
+  const subj = h('input', { class: 'in', placeholder: 'Ex.: Contrato para assinatura — Bagaggio', oninput: (e) => st.subject = e.target.value });
+  const msg = h('textarea', { class: 'in', placeholder: 'Digite sua mensagem aqui.', oninput: (e) => st.message = e.target.value });
+  const savedSel = h('select', { class: 'in', style: 'max-width:220px;padding:7px 10px' }, h('option', { value: '' }, 'Mensagens salvas'));
+  let saved = [];
+  const loadSaved = async () => {
+    try { saved = await adminApi('messages', { op: 'list' }); } catch (e) { saved = []; }
+    savedSel.replaceChildren(h('option', { value: '' }, saved.length ? 'Mensagens salvas' : 'Nenhuma mensagem salva'), ...saved.map(m => h('option', { value: m.id }, m.title)));
+  };
+  savedSel.addEventListener('change', () => {
+    const m = saved.find(x => x.id === savedSel.value); if (!m) return;
+    st.subject = subj.value = m.subject; st.message = msg.value = m.body;
+  });
+  const saveMsg = h('button', { class: 'btn btn-ghost btn-sm', onclick: async (e) => {
+    if (!msg.value.trim() && !subj.value.trim()) return toast('Escreva o assunto ou a mensagem antes de salvar.', true);
+    const title = window.prompt('Nome para esta mensagem (ex.: Rescisão, Contrato de prestador):'); if (!title) return;
+    await busy(e.currentTarget, async () => { await adminApi('messages', { op: 'save', message: { title, subject: subj.value, body: msg.value } }); await loadSaved(); toast('Mensagem salva.'); }).catch(() => {});
+  } }, 'Salvar mensagem');
+  loadSaved();
+
+  // observadores
+  const obsEmail = h('input', { class: 'in', type: 'email', placeholder: 'E-mail de quem vai acompanhar' });
+  const obsNotify = h('select', { class: 'in', style: 'max-width:300px' },
+    h('option', { value: 'final' }, 'Receber o documento finalizado'), h('option', { value: 'each' }, 'A cada assinatura e ao finalizar'));
+  const drawObs = () => obsBox.replaceChildren(...st.observers.map((o, i) => h('div', { class: 'obs-row' }, h('span', { style: 'flex:1;word-break:break-all' }, o.email),
+    h('span', { class: 'chip' }, o.notify === 'each' ? 'A cada assinatura' : 'Ao finalizar'),
+    h('button', { class: 'ib', html: I.trash, onclick: () => { st.observers.splice(i, 1); drawObs(); } }))));
+  const addObs = h('button', { class: 'btn btn-ghost', onclick: () => {
+    const e = obsEmail.value.trim().toLowerCase();
+    if (!emailOk(e)) return toast('E-mail inválido.', true);
+    if (st.observers.some(o => o.email === e)) return toast('Observador já incluído.', true);
+    st.observers.push({ email: e, notify: obsNotify.value }); obsEmail.value = ''; drawObs();
+  } }, icon('plus'), 'Adicionar');
+
+  // configurações
+  const deadline = h('input', { class: 'in', type: 'date', value: st.deadline, min: todayBr(), style: 'max-width:200px', onchange: (e) => st.deadline = e.target.value });
+  const rem = h('select', { class: 'in', style: 'max-width:240px', onchange: (e) => st.reminderDays = +e.target.value },
+    [[0, 'Desativados'], [1, 'A cada 1 dia'], [2, 'A cada 2 dias'], [3, 'A cada 3 dias'], [5, 'A cada 5 dias'], [7, 'A cada 7 dias']].map(([v, l]) => h('option', { value: v, selected: v === st.reminderDays }, l)));
+  const fin = (v, t, d) => h('label', { class: 'radio' }, h('input', { type: 'radio', name: 'fin', checked: st.finalize === v, onchange: () => st.finalize = v }),
+    h('div', null, h('b', null, t), h('div', { class: 'd' }, d)));
+
+  function drawSum() {
+    sumEl.textContent = `${st.docs.length} documento(s) · ${st.signers.length} signatário(s)`;
+  }
+  const sendBtn = h('button', { class: 'btn btn-primary' }, icon('mail'), 'Enviar');
+  sendBtn.onclick = async () => {
+    if (!st.docs.length) return toast('Adicione ao menos um documento.', true);
+    if (st.docs.some(d => d.busy)) return toast('Aguarde o processamento dos documentos.', true);
+    if (!nameIn.value.trim()) return toast('Dê um nome ao envelope.', true);
+    if (!st.signers.length) return toast('Adicione ao menos um signatário.', true);
+    if (!st.deadline) return toast('Informe a data limite.', true);
+    await busy(sendBtn, async () => {
+      const r = await adminApi('createEnvelope', {
+        name: nameIn.value.trim(), subject: st.subject.trim(), message: st.message.trim(), ordered: st.ordered, deadline: st.deadline,
+        reminderDays: st.reminderDays, finalize: st.finalize, observers: st.observers, senderEmail: S.senderEmail,
+        documents: st.docs.map(d => ({ name: d.name.trim() || d.fileName, fileName: d.fileName, sourceType: d.sourceType, pages: d.pages, pdfBase64: bytesToB64(d.bytes) })),
+        signers: st.signers.map(s => ({ name: s.name, email: s.email, phone: s.phone, delivery: s.delivery, cpf: s.cpf, birth: s.birth, askCpf: s.askCpf, role: s.role, auths: s.auths, saveContact: s.saveContact })),
+        client: await clientInfo()
+      });
+      toast('Envelope enviado.');
+      await renderDashboard();
+      openDetail(r.id, true);
+    }, 'Enviando…').catch(() => {});
+  };
+
+  mount(dashTopbar(), h('main', { class: 'form-page' },
+    h('button', { class: 'btn btn-ghost btn-sm', onclick: renderDashboard, style: 'margin-bottom:14px' }, '← Voltar aos envelopes'),
+    h('h1', null, 'Novo envelope'),
+    h('p', { class: 'muted', style: 'margin:0' }, 'Monte o envelope com os documentos, os signatários e as regras de assinatura.'),
+    h('section', { class: 'card fsec' }, h('h2', null, 'Documentos', h('span', { class: 'req' }, '*')),
+      h('p', { class: 'lead' }, 'Arquivos que não são PDF são convertidos para PDF antes do envio. Confira a conversão.'), docsBox,
+      h('div', { class: 'field', style: 'margin-top:14px;margin-bottom:0' }, h('label', { class: 'f' }, 'Nome do envelope'), nameIn)),
+    h('section', { class: 'card fsec' }, h('h2', null, 'Signatários', h('span', { class: 'req' }, '*')), signersBox),
+    h('section', { class: 'card fsec' }, h('h2', null, 'Mensagem ', h('span', { class: 'opt' }, '(opcional)'), h('span', { style: 'flex:1' }), savedSel, saveMsg),
+      h('div', { class: 'field' }, h('label', { class: 'f' }, 'Assunto personalizado do e-mail'), subj),
+      h('div', { class: 'field', style: 'margin:0' }, h('label', { class: 'f' }, 'Mensagem do e-mail'), msg)),
+    h('section', { class: 'card fsec' }, h('h2', null, 'Observadores ', h('span', { class: 'opt' }, '(opcional)')),
+      h('p', { class: 'lead' }, 'Quem acompanha o envelope sem assinar. Recebe as vias finais por e-mail.'),
+      h('div', { style: 'display:flex;gap:8px;flex-wrap:wrap' }, h('div', { style: 'flex:1;min-width:220px' }, obsEmail), obsNotify, addObs), obsBox),
+    h('section', { class: 'card fsec' }, h('h2', null, 'Configurações'),
+      h('div', { class: 'grid2' },
+        h('div', { class: 'field' }, h('label', { class: 'f' }, 'Data limite para assinaturas'), deadline,
+          h('div', { class: 'small muted', style: 'margin-top:4px' }, 'Depois dessa data, o envelope é encerrado.')),
+        h('div', { class: 'field' }, h('label', { class: 'f' }, 'Lembretes automáticos por e-mail'), rem,
+          h('div', { class: 'small muted', style: 'margin-top:4px' }, 'Até 3 lembretes para quem estiver pendente.'))),
+      h('label', { class: 'f', style: 'margin-top:4px' }, 'Finalização'),
+      fin('auto', 'Automática', 'O envelope é finalizado assim que todos assinarem, e as vias finais são enviadas na hora.'),
+      fin('manual', 'Manual', 'Depois que todos assinarem, você confere e clica em “Finalizar” no painel.'))),
+    h('div', { class: 'sticky-foot' }, h('div', { class: 'in-wrap' }, sumEl, h('button', { class: 'btn btn-ghost', onclick: renderDashboard }, 'Cancelar'), sendBtn)));
+  drawDocs(); drawSigners();
+}
+
+function previewPdf(bytes, title) {
+  const v = h('div', { class: 'viewer' });
+  modal({ title: title || 'Documento', wide: true, body: v });
+  renderPdf(v, bytes);
+}
+
+/* ---------- detalhe ---------- */
+async function openDetail(id, justSent) {
+  const m = modal({ title: 'Carregando…', wide: true, body: loadingView() });
+  let d;
+  try { d = await adminApi('getEnvelope', { id }); } catch (e) { m.setBody(h('div', { class: 'alert bad' }, e.message)); return; }
+  const env = d.env;
+  m.setTitle(env.name);
+  const getFile = (doc, kind, btn) => busy(btn, async () => {
+    const f = await adminApi('getFile', { envelopeId: id, docId: doc.id, kind }); download(b64ToBytes(f.pdfBase64), f.fileName);
+  }).catch(() => {});
+  const waMsg = (s) => `Olá, ${s.name.split(' ')[0]}! Segue o link para você revisar e assinar "${env.name}": ${s.link}\nA assinatura pede um código que chega no seu e-mail (${s.email}).`;
+
+  const top = [];
+  if (justSent) top.push(h('div', { class: 'alert ok' }, h('span', { html: I.check }), h('div', null, h('b', null, 'Envelope enviado. '),
+    env.ordered ? 'O primeiro signatário já recebeu o e-mail; os demais serão avisados na sequência.' : 'Os signatários receberam o e-mail com o link.',
+    d.signers.some(s => s.delivery === 'whatsapp') ? ' Use o botão “WhatsApp” abaixo para mandar o link também por lá.' : '')));
+  if (env.status === 'aguardando_finalizacao') top.push(h('div', { class: 'alert warn' }, h('span', { html: I.info }), h('div', { style: 'flex:1' }, 'Todos assinaram. Confira e finalize para gerar e enviar as vias finais.'),
+    h('button', { class: 'btn btn-ink btn-sm', onclick: (e) => busy(e.currentTarget, async () => { await adminApi('finalizeEnvelope', { id, client: await clientInfo() }); toast('Finalizando… as vias serão enviadas por e-mail.'); m.close(); renderDashboard(); }).catch(() => {}) }, 'Finalizar')));
+  if (env.status === 'finalizando') top.push(h('div', { class: 'alert info' }, h('span', { html: I.info }), h('div', null, 'Gerando as vias finais. Em instantes elas ficam disponíveis aqui e são enviadas por e-mail.' + (env.finalError ? ' Última tentativa falhou: ' + env.finalError : ''))));
+
+  const docs = d.documents.map(doc => h('div', { class: 'srow' },
+    h('span', { class: 'ic', style: 'width:32px;height:32px;border-radius:8px;background:var(--bad-soft);color:var(--bad);display:grid;place-items:center;font-size:10px;font-weight:800;flex:none' }, 'PDF'),
+    h('div', { class: 'info' }, h('div', { class: 'nm' }, doc.name),
+      h('div', { class: 'small muted' }, `${doc.pages || '?'} pág. · código `, h('span', { class: 'mono' }, doc.code)),
+      h('div', { class: 'small muted mono', title: 'SHA-256 do original' }, 'Original: ' + doc.hash),
+      doc.finalHash && h('div', { class: 'small muted mono', title: 'SHA-256 da via final' }, 'Via final: ' + doc.finalHash)),
+    h('div', { class: 'acts' },
+      h('button', { class: 'btn btn-ghost btn-sm', onclick: (e) => getFile(doc, 'original', e.currentTarget) }, icon('dl'), 'Original'),
+      doc.hasFinal && h('button', { class: 'btn btn-primary btn-sm', onclick: (e) => getFile(doc, 'final', e.currentTarget) }, icon('dl'), 'Assinado'),
+      h('button', { class: 'btn btn-ghost btn-sm', title: 'Copiar link de verificação', onclick: () => copy(d.appUrl + '?v=' + doc.code, 'Link de verificação copiado.') }, icon('copy')))));
+
+  const signers = d.signers.map(s => h('div', { class: 'srow' },
+    h('span', { class: env.ordered ? 'num' : 'dot ' + s.status }, env.ordered ? s.idx : initials(s.name)),
+    h('div', { class: 'info' },
+      h('div', null, h('span', { class: 'nm' }, s.name), ' ', badge(SIG_ST, s.status)),
+      h('div', { class: 'small muted' }, `${roleLabel(s.role)} · ${s.email}${s.phone ? ' · ' + fmtPhone(s.phone) : ''}${s.cpf ? ' · CPF ' + s.cpf : ''}`),
+      h('div', { class: 'chips', style: 'margin:6px 0' }, s.auths.map(a => h('span', { class: 'chip' }, authLabel(a)))),
+      h('div', { class: 'small muted' },
+        s.status === 'assinado' ? `Assinou em ${fmtDT(s.signedAt)}${s.ip ? ' · IP ' + s.ip : ''}`
+          : s.status === 'recusado' ? `Recusou em ${fmtDT(s.declinedAt)} — ${s.declineReason}`
+            : (s.viewedAt ? 'Visualizou em ' + fmtDT(s.viewedAt) : 'Ainda não abriu') + (s.lastEmailAt ? ` · último e-mail ${fmtDT(s.lastEmailAt)}` : (env.ordered ? ' · aguardando a vez' : '')) + (s.remindersSent ? ` · ${s.remindersSent} lembrete(s) automático(s)` : '')),
+      s.evidence.length ? h('div', { class: 'small muted' }, 'Evidências: ' + s.evidence.map(e => e.label).join(', ')) : null),
+    s.status === 'pendente' && env.status === 'em_andamento' ? h('div', { class: 'acts' },
+      h('button', { class: 'btn btn-ghost btn-sm', title: 'Copiar link de assinatura', onclick: () => copy(s.link, 'Link de assinatura copiado.') }, icon('copy'), 'Link'),
+      s.phone && s.turn && h('a', { class: 'btn btn-ghost btn-sm', href: waLink(s.phone, waMsg(s)), target: '_blank', rel: 'noopener' }, icon('wa'), 'WhatsApp'),
+      s.turn && h('button', { class: 'btn btn-ghost btn-sm', onclick: (e) => busy(e.currentTarget, async () => { await adminApi('remind', { id, signerId: s.id }); toast('Lembrete enviado por e-mail.'); }).catch(() => {}) }, icon('mail'), 'Reenviar')) : null));
+
+  const actions = [];
+  if (['em_andamento', 'aguardando_finalizacao'].includes(env.status)) actions.push(h('button', { class: 'btn btn-danger btn-sm', onclick: () => confirmCancel(id, m) }, 'Cancelar envelope'));
+
+  m.setBody(...top,
+    h('div', { style: 'display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:6px' }, badge(ENV_ST, env.status), h('div', { style: 'flex:1' }), actions),
+    h('div', { class: 'section-t' }, `Documentos (${d.documents.length})`), h('div', null, docs),
+    h('div', { class: 'section-t' }, 'Signatários'), h('div', null, signers),
+    h('div', { class: 'section-t' }, 'Configurações'),
+    h('dl', { class: 'kv' },
+      h('dt', null, 'Criado em'), h('dd', null, fmtDT(env.createdAt) + (env.sender ? ' por ' + env.sender : '')),
+      env.completedAt && h('dt', null, 'Concluído em'), env.completedAt && h('dd', null, fmtDT(env.completedAt)),
+      h('dt', null, 'Data limite'), h('dd', null, fmtYmd(env.deadline)),
+      h('dt', null, 'Ordem'), h('dd', null, env.ordered ? 'Sequencial' : 'Livre'),
+      h('dt', null, 'Lembretes'), h('dd', null, env.reminderDays ? `A cada ${env.reminderDays} dia(s), até 3` : 'Desativados'),
+      h('dt', null, 'Finalização'), h('dd', null, env.finalize === 'manual' ? 'Manual' : 'Automática'),
+      h('dt', null, 'Observadores'), h('dd', null, env.observers.length ? env.observers.map(o => `${o.email} (${o.notify === 'each' ? 'a cada assinatura' : 'ao finalizar'})`).join(', ') : 'Nenhum'),
+      env.subject && h('dt', null, 'Assunto do e-mail'), env.subject && h('dd', null, env.subject),
+      env.message && h('dt', null, 'Mensagem'), env.message && h('dd', { style: 'white-space:pre-wrap' }, env.message)),
+    h('div', { class: 'section-t' }, 'Histórico'),
+    h('div', { class: 'timeline' }, d.events.map(e => h('div', { class: 'ev ' + e.type },
+      h('div', { class: 'd' }, fmtDT(e.ts) + (e.ip ? ` · IP ${e.ip}${e.ipSource ? ' (' + e.ipSource + ')' : ''}` : '')), h('div', { class: 'tx' }, e.detail)))));
+}
+
+function confirmCancel(id, parent) {
+  const reason = h('textarea', { class: 'in', placeholder: 'Motivo (opcional, será informado aos signatários)' });
+  const go = h('button', { class: 'btn btn-danger' }, 'Cancelar envelope');
+  const c = modal({ title: 'Cancelar envelope?', body: [h('p', { style: 'margin-top:0' }, 'Os links de assinatura deixam de funcionar. Esta ação não pode ser desfeita.'), reason],
+    footer: [h('button', { class: 'btn btn-ghost', onclick: () => c.close() }, 'Voltar'), go] });
+  go.addEventListener('click', () => busy(go, async () => {
+    await adminApi('cancel', { id, reason: reason.value.trim(), client: await clientInfo() });
+    c.close(); parent.close(); toast('Envelope cancelado.'); renderDashboard();
+  }).catch(() => {}));
+}
+
+/* =====================================================================
+   TELA DO SIGNATÁRIO
+   ===================================================================== */
+async function renderSigner(token) {
+  mount(topbar(null), h('main', { class: 'wrap' }, loadingView('Carregando documentos…')));
+  let d;
+  try { d = await api('signerOpen', { token, client: await clientInfo() }); }
+  catch (e) {
+    mount(topbar(null), h('main', { class: 'wrap' }, h('div', { class: 'center-screen', style: 'min-height:60vh' },
+      h('div', { class: 'card', style: 'padding:30px;max-width:460px;text-align:center' }, h('h2', { style: 'margin-bottom:8px' }, 'Link indisponível'), h('p', { class: 'muted' }, e.message)))));
+    return;
+  }
+  if (d.brand) { CONFIG.BRAND = d.brand; document.title = d.brand; }
+  const env = d.env, me = d.me;
+  for (const doc of d.documents) { doc.bytes = b64ToBytes(doc.pdfBase64); delete doc.pdfBase64; doc.seen = await sha256(doc.bytes); doc.intact = doc.seen === doc.hash; }
+  const allIntact = d.documents.every(x => x.intact);
+  const docHashes = Object.fromEntries(d.documents.map(x => [x.id, x.seen]));
+
+  const dlFinal = (doc, btn) => busy(btn, async () => { const f = await api('getFile', { token, docId: doc.id, kind: 'final' }); download(b64ToBytes(f.pdfBase64), f.fileName); }).catch(() => {});
+  const finals = () => h('div', { class: 'dl-list' }, d.documents.map(doc => h('button', { class: 'btn btn-ink btn-sm', style: 'justify-content:flex-start', onclick: (e) => dlFinal(doc, e.currentTarget) }, icon('dl'), doc.name + ' (assinado)')));
+
+  let banner = null, bar = null;
+  if (me.status === 'assinado') {
+    banner = h('div', { class: 'alert ok' }, h('span', { html: I.check }), h('div', { style: 'flex:1' },
+      h('b', null, 'Você assinou'), ' em ' + fmtDT(me.signedAt) + '. O comprovante foi enviado ao seu e-mail.',
+      env.status === 'concluido' ? finals()
+        : h('div', { class: 'small', style: 'margin-top:4px' }, env.status === 'finalizando' ? 'Todos assinaram. As vias finais estão sendo geradas e chegarão por e-mail.'
+          : env.status === 'aguardando_finalizacao' ? 'Todos assinaram. Aguardando a finalização pelo remetente.' : 'Quando todos assinarem, você receberá as vias finais por e-mail.')));
+  } else if (me.status === 'recusado') {
+    banner = h('div', { class: 'alert bad' }, h('span', { html: I.info }), h('div', null, 'Você recusou a assinatura em ' + fmtDT(me.declinedAt) + '.'));
+  } else if (env.status !== 'em_andamento') {
+    const txt = { cancelado: 'Este envelope foi cancelado pelo remetente.', expirado: 'A data limite para assinatura terminou.', recusado: 'Este envelope foi recusado por um dos signatários e não pode mais ser assinado.' }[env.status] || 'Este envelope não está mais disponível para assinatura.';
+    banner = h('div', { class: 'alert warn' }, h('span', { html: I.info }), h('div', null, txt));
+  } else if (!d.canSign) {
+    banner = h('div', { class: 'alert warn' }, h('span', { html: I.info }), h('div', null, 'Este envelope é assinado em ordem. Aguardando a assinatura de ', h('b', null, d.waitingFor || 'outro signatário'), '. Você receberá um e-mail quando for a sua vez.'));
+  } else {
+    bar = h('div', { class: 'actionbar' }, h('div', { class: 'wrap' },
+      h('div', { class: 'tx' }, h('b', null, me.name), h('div', { class: 'small muted' }, `Assinando como ${me.roleLabel} · ${d.documents.length} documento(s)`)),
+      h('button', { class: 'btn btn-ghost', onclick: () => openDecline(token) }, 'Recusar'),
+      h('button', { class: 'btn btn-primary', disabled: !allIntact, onclick: () => openSignFlow(token, d, docHashes) }, icon('pen'), 'Assinar')));
+  }
+
+  const viewer = h('div', { class: 'viewer' });
+  const tabs = h('div', { class: 'doc-tabs' });
+  const docList = h('ul', { class: 'doclist' });
+  let cur = 0;
+  const show = (i) => {
+    cur = i;
+    tabs.replaceChildren(...(d.documents.length > 1 ? d.documents.map((x, j) => h('button', { class: j === cur ? 'on' : '', onclick: () => show(j) }, x.name)) : []));
+    docList.replaceChildren(...d.documents.map((x, j) => h('li', { class: j === cur ? 'on' : '', onclick: () => show(j) },
+      h('span', { class: 'ic' }, 'PDF'), h('div', { style: 'flex:1;min-width:0' }, h('div', { style: 'font-weight:600' }, x.name), h('div', { class: 'small muted' }, `${x.pages || '?'} pág.`)),
+      x.intact ? h('span', { html: I.shield, style: 'color:var(--ok);width:16px;display:inline-flex', title: 'Integridade conferida' }) : h('span', { class: 'badge st-bad' }, 'divergente'))));
+    renderPdf(viewer, d.documents[cur].bytes);
+  };
+  const side = h('aside', { class: 'card side' },
+    h('div', { class: 'small muted', style: 'font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px' }, 'Envelope para assinatura'),
+    h('h1', null, env.name),
+    h('div', { class: 'small muted' }, (env.sender ? 'Enviado por ' + env.sender + ' em ' : 'Enviado em ') + fmtD(env.createdAt)),
+    h('div', { class: 'small', style: 'margin-top:4px' }, 'Data limite: ', h('b', null, fmtYmd(env.deadline))),
+    env.message && h('div', { class: 'msg' }, env.message),
+    h('div', { class: 'section-t', style: 'margin-top:18px' }, `Documentos (${d.documents.length})`), docList,
+    h('div', { class: 'section-t', style: 'margin-top:18px' }, 'Signatários'),
+    h('ul', { class: 'plist' }, d.signers.map(s => h('li', null, h('span', { class: 'dot ' + s.status }, initials(s.name)),
+      h('div', { style: 'min-width:0' }, h('div', { style: 'font-weight:600' }, s.name + (s.me ? ' (você)' : '')), h('div', { class: 'small muted' }, s.roleLabel)),
+      h('span', { class: 'st' }, badge(SIG_ST, s.status))))),
+    allIntact ? h('div', { class: 'integrity' }, h('span', { html: I.shield }), h('span', null, 'Integridade dos documentos conferida (SHA-256).'))
+      : h('div', { class: 'alert bad', style: 'margin-top:14px' }, 'Atenção: um dos arquivos recebidos não confere com o original registrado. Recarregue a página.'));
+
+  mount(topbar(null), h('main', { class: 'wrap' }, banner && h('div', { style: 'margin-top:20px' }, banner),
+    h('div', { class: 'doc-layout', style: banner ? 'margin-top:4px' : '' }, side, h('div', null, tabs, viewer))), bar);
+  show(0);
+}
+
+function openSignFlow(token, d, docHashes) {
+  const me = d.me;
+  const needEvidence = me.auths.some(a => ['documento', 'selfie', 'endereco'].includes(a));
+  const steps = ['dados', 'token', ...(needEvidence ? ['identificacao'] : []), 'assinatura'];
+  const st = { i: 0, cpf: '', birth: '', code: '', type: 'desenhada', font: 'Dancing Script', typed: me.name, cooldown: 0, ev: {} };
+  const onlyDrawn = me.auths.includes('manuscrita');
+  let pad = null, timer = null, stream = null;
+  const m = modal({ title: 'Assinar', body: h('div'), onClose: () => { clearInterval(timer); stopCam(); } });
+  const stopCam = () => { if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; } };
+  const go = (k) => { stopCam(); st.i = steps.indexOf(k); draw(); };
+  const stepsBar = () => h('div', { class: 'steps' }, steps.map((_, n) => h('i', { class: n <= st.i ? 'on' : '' })));
+  const back = () => h('button', { class: 'btn btn-ghost', onclick: () => { clearInterval(timer); go(steps[st.i - 1]); } }, 'Voltar');
+
+  function dados() {
+    const cpf = maskInput(h('input', { class: 'in', inputmode: 'numeric', placeholder: '000.000.000-00', value: st.cpf }), fmtCpf);
+    const birth = h('input', { class: 'in', type: 'date', value: st.birth, max: todayBr() });
+    const next = h('button', { class: 'btn btn-ink' }, 'Continuar');
+    next.onclick = () => {
+      if (me.askCpf && !cpfValid(cpf.value)) return toast('CPF inválido.', true);
+      if (!birth.value) return toast('Informe sua data de nascimento.', true);
+      st.cpf = me.askCpf ? cpf.value : ''; st.birth = birth.value; go('token');
+    };
+    m.setTitle('Confirme seus dados');
+    m.setBody(stepsBar(), h('p', { class: 'small muted', style: 'margin:0 0 16px' }, 'Esses dados identificam você no manifesto de assinaturas.'),
+      h('div', { class: 'field' }, h('label', { class: 'f' }, 'Nome'), h('input', { class: 'in', value: me.name, disabled: true })),
+      h('div', { class: 'grid2' },
+        me.askCpf && h('div', { class: 'field' }, h('label', { class: 'f' }, 'CPF'), cpf, me.cpfRegistered && h('div', { class: 'small muted', style: 'margin-top:4px' }, 'Deve conferir com o CPF cadastrado: ' + me.cpfMasked)),
+        h('div', { class: 'field' }, h('label', { class: 'f' }, 'Data de nascimento'), birth)));
+    m.setFooter(h('button', { class: 'btn btn-ghost', onclick: () => m.close() }, 'Cancelar'), next);
+  }
+
+  function tokenStep() {
+    const code = h('input', { class: 'in code-in', inputmode: 'numeric', maxlength: 6, autocomplete: 'one-time-code', placeholder: '••••••', value: st.code });
+    code.addEventListener('input', () => { code.value = digits(code.value).slice(0, 6); st.code = code.value; });
+    const sendBtn = h('button', { class: 'btn btn-ink btn-block' }, icon('mail'), 'Enviar código para ' + me.email);
+    const area = h('div'), info = h('div', { class: 'small muted', style: 'text-align:center;margin-top:10px' });
+    const confirm = h('button', { class: 'btn btn-ink' }, 'Confirmar código');
+    const tick = () => {
+      clearInterval(timer);
+      timer = setInterval(() => {
+        st.cooldown--;
+        if (st.cooldown <= 0) { clearInterval(timer); info.replaceChildren(h('a', { href: '#', onclick: (e) => { e.preventDefault(); send(); } }, 'Reenviar código')); }
+        else info.textContent = `Reenviar em ${st.cooldown}s`;
+      }, 1000);
+    };
+    const send = async (btn) => {
+      const run = async () => { const r = await api('sendCode', { token, cpf: st.cpf, birth: st.birth, client: await clientInfo() }); st.cooldown = 60; st.sent = true; showCode(); tick(); toast('Código enviado para ' + r.sentTo + '.'); };
+      if (btn) await busy(btn, run).catch(() => {}); else await run().catch(e => toast(e.message, true));
+    };
+    function showCode() {
+      area.replaceChildren(h('p', { class: 'small', style: 'text-align:center;margin:0 0 10px' }, 'Digite o código de 6 dígitos enviado para ', h('b', null, me.email), '. Confira também o spam.'), code, info);
+      info.textContent = st.cooldown > 0 ? `Reenviar em ${st.cooldown}s` : '';
+      m.setFooter(back(), confirm);
+      setTimeout(() => code.focus(), 50);
+    }
+    sendBtn.onclick = () => send(sendBtn);
+    confirm.onclick = () => {
+      if (code.value.length !== 6) return toast('Digite os 6 dígitos.', true);
+      busy(confirm, async () => { await api('checkCode', { token, code: code.value, client: await clientInfo() }); clearInterval(timer); go(steps[st.i + 1]); }).catch(() => {});
+    };
+    m.setTitle('Verificação por e-mail');
+    m.setBody(stepsBar(), h('p', { class: 'small muted', style: 'margin:0 0 16px' }, 'Para confirmar que é você, enviaremos um código de uso único ao seu e-mail.'), area);
+    if (st.sent) showCode(); else { area.replaceChildren(sendBtn); m.setFooter(back()); }
+  }
+
+  function identificacao() {
+    const blocks = [];
+    const pickBtn = (label, capture, onFile, accept = 'image/*') => {
+      const inp = h('input', { type: 'file', accept, capture: capture || null, style: 'display:none', onchange: () => { if (inp.files[0]) onFile(inp.files[0]); inp.value = ''; } });
+      return [h('button', { class: 'btn btn-ghost btn-sm', onclick: () => inp.click() }, icon(capture ? 'cam' : 'upload'), label), inp];
+    };
+    if (me.auths.includes('documento')) {
+      const prev = h('div', { class: 'prev' });
+      const drawPrev = () => prev.replaceChildren(...['docFront', 'docBack'].filter(k => st.ev[k]).map(k => h('img', { src: st.ev[k], alt: k === 'docFront' ? 'Frente' : 'Verso' })));
+      const set = (k) => async (f) => { try { st.ev[k] = await compressImage(f); drawPrev(); } catch (e) { toast(e.message, true); } };
+      blocks.push(h('div', { class: 'evi' }, h('h4', null, 'Documento oficial'), h('div', { class: 'd' }, 'Fotografe o seu RG ou CNH. A frente é obrigatória; o verso é opcional. Garanta que os dados estejam legíveis.'),
+        h('div', { class: 'btn-row', style: 'margin:0' }, ...pickBtn('Frente do documento', 'environment', set('docFront')), ...pickBtn('Verso (opcional)', 'environment', set('docBack'))), prev));
+      drawPrev();
+    }
+    if (me.auths.includes('selfie')) {
+      const box = h('div');
+      const drawSelfie = () => {
+        if (st.ev.selfie) { box.replaceChildren(h('div', { class: 'prev' }, h('img', { src: st.ev.selfie, alt: 'Selfie' })), h('button', { class: 'btn btn-ghost btn-sm', style: 'margin-top:8px', onclick: () => { st.ev.selfie = null; drawSelfie(); } }, 'Tirar de novo')); return; }
+        box.replaceChildren(h('button', { class: 'btn btn-ink btn-sm', onclick: openCam }, icon('cam'), 'Abrir câmera'), ' ', ...pickBtn('Usar a câmera do celular', 'user', async (f) => { st.ev.selfie = await compressImage(f); drawSelfie(); }));
+      };
+      async function openCam() {
+        try { stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user', width: { ideal: 1280 } }, audio: false }); }
+        catch (e) { toast('Não foi possível abrir a câmera. Use o botão “Usar a câmera do celular”.', true); return; }
+        const v = h('video', { autoplay: true, playsinline: true, muted: true }); v.srcObject = stream;
+        const shot = h('button', { class: 'btn btn-primary btn-sm', style: 'margin-top:8px' }, icon('cam'), 'Capturar');
+        shot.onclick = () => {
+          const c = h('canvas', { width: v.videoWidth, height: v.videoHeight }); const ctx = c.getContext('2d');
+          ctx.translate(c.width, 0); ctx.scale(-1, 1); ctx.drawImage(v, 0, 0);
+          stopCam(); compressImage(c.toDataURL('image/jpeg', 0.9)).then(u => { st.ev.selfie = u; drawSelfie(); });
+        };
+        box.replaceChildren(h('div', { class: 'cam' }, v), shot, ' ', h('button', { class: 'btn btn-ghost btn-sm', style: 'margin-top:8px', onclick: () => { stopCam(); drawSelfie(); } }, 'Cancelar'));
+      }
+      blocks.push(h('div', { class: 'evi' }, h('h4', null, 'Selfie com documento'), h('div', { class: 'd' }, 'Tire uma foto sua segurando o documento ao lado do rosto, com o rosto e o documento visíveis.'), box));
+      drawSelfie();
+    }
+    if (me.auths.includes('endereco')) {
+      const stEl = h('div');
+      const drawAddr = () => stEl.replaceChildren(st.ev.address ? h('div', { class: 'ok', style: 'margin-top:8px' }, icon('check'), 'Comprovante anexado' + (st.ev.addressName ? ': ' + st.ev.addressName : '')) : '');
+      blocks.push(h('div', { class: 'evi' }, h('h4', null, 'Comprovante de endereço'), h('div', { class: 'd' }, 'Envie uma conta de consumo, extrato ou correspondência recente com o seu nome e endereço (foto ou PDF, até 6 MB).'),
+        h('div', { class: 'btn-row', style: 'margin:0' }, ...pickBtn('Fotografar', 'environment', async (f) => { st.ev.address = await compressImage(f); st.ev.addressName = 'foto'; drawAddr(); }),
+          ...pickBtn('Enviar arquivo', null, async (f) => {
+            if (f.size > 6 * 1048576) return toast('Arquivo acima de 6 MB.', true);
+            st.ev.address = f.type === 'application/pdf' ? await fileToDataUrl(f) : await compressImage(f); st.ev.addressName = f.name; drawAddr();
+          }, 'image/*,application/pdf')), stEl));
+      drawAddr();
+    }
+    const next = h('button', { class: 'btn btn-ink' }, 'Continuar');
+    next.onclick = () => {
+      if (me.auths.includes('documento') && !st.ev.docFront) return toast('Envie a foto da frente do documento.', true);
+      if (me.auths.includes('selfie') && !st.ev.selfie) return toast('Tire a selfie com o documento.', true);
+      if (me.auths.includes('endereco') && !st.ev.address) return toast('Envie o comprovante de endereço.', true);
+      go('assinatura');
+    };
+    m.setTitle('Identificação');
+    m.setBody(stepsBar(), h('p', { class: 'small muted', style: 'margin:0 0 14px' }, 'O remetente pediu as evidências abaixo. Elas ficam anexadas ao manifesto de assinaturas.'), ...blocks);
+    m.setFooter(back(), next);
+  }
+
+  function assinatura() {
+    const holder = h('div'), tabs = h('div', { class: 'tabs' });
+    const accept = h('input', { type: 'checkbox' });
+    const signBtn = h('button', { class: 'btn btn-primary' }, icon('pen'), 'Assinar');
+    function drawTabs() {
+      tabs.replaceChildren(h('button', { class: st.type === 'desenhada' ? 'on' : '', onclick: () => { st.type = 'desenhada'; drawTabs(); } }, 'Desenhar'),
+        !onlyDrawn && h('button', { class: st.type === 'digitada' ? 'on' : '', onclick: () => { st.type = 'digitada'; drawTabs(); } }, 'Digitar'));
+      if (st.type === 'desenhada') { pad = signaturePad(); holder.replaceChildren(pad.el, onlyDrawn ? h('div', { class: 'small muted', style: 'margin-top:6px' }, 'O remetente exigiu assinatura manuscrita (desenhada).') : ''); requestAnimationFrame(pad.fit); }
+      else {
+        const preview = h('div', { class: 'typed', style: `font-family:'${st.font}',cursive` }, st.typed);
+        const inp = h('input', { class: 'in', value: st.typed, maxlength: 60, oninput: (e) => { st.typed = e.target.value; preview.textContent = st.typed || ' '; } });
+        holder.replaceChildren(h('div', { class: 'field' }, inp), preview, h('div', { class: 'fonts' }, ['Dancing Script', 'Caveat', 'Homemade Apple'].map(f =>
+          h('button', { class: st.font === f ? 'on' : '', style: `font-family:'${f}',cursive`, onclick: () => { st.font = f; drawTabs(); } }, 'Assinatura'))));
+      }
+    }
+    drawTabs();
+    signBtn.onclick = async () => {
+      if (!accept.checked) return toast('Marque a declaração para assinar.', true);
+      let img;
+      if (st.type === 'desenhada') { if (!pad || !pad.hasInk()) return toast('Desenhe sua assinatura.', true); img = pad.toPng(); }
+      else { if (st.typed.trim().length < 3) return toast('Digite sua assinatura.', true); img = await typedPng(st.typed.trim(), st.font); }
+      await busy(signBtn, async () => {
+        const geo = await getGeo();
+        const r = await api('sign', { token, code: st.code, cpf: st.cpf, birth: st.birth, sigType: st.type, sigImage: img, docHashes, accept: true, geo,
+          evidence: { docFront: st.ev.docFront, docBack: st.ev.docBack, selfie: st.ev.selfie, address: st.ev.address }, client: await clientInfo() });
+        done(r);
+      }, 'Assinando…').catch(() => {});
+    };
+    m.setTitle('Sua assinatura');
+    m.setBody(stepsBar(), tabs, holder,
+      h('label', { class: 'check' }, accept, h('span', null, 'Declaro que li e concordo com o conteúdo ', d.documents.length > 1 ? `dos ${d.documents.length} documentos do envelope “` : 'do documento “',
+        h('b', null, d.env.name), '” e que reconheço esta assinatura eletrônica como válida para comprovar minha autoria e manifestação de vontade, nos termos do art. 10, § 2º, da MP nº 2.200-2/2001.')));
+    m.setFooter(back(), signBtn);
+  }
+
+  function done(r) {
+    m.setTitle('Assinatura registrada');
+    m.setBody(h('div', { style: 'text-align:center' }, h('div', { class: 'done-ic', html: I.check }),
+      h('h3', { style: 'font-size:20px;margin-bottom:8px' }, 'Pronto, você assinou!'),
+      h('p', { class: 'muted', style: 'margin:0' }, 'Enviamos o comprovante para o seu e-mail. ' + (r.completed
+        ? (r.finalize === 'manual' ? 'Todos assinaram; o remetente vai finalizar o envelope e você receberá as vias finais.' : 'Todos assinaram; as vias finais serão enviadas por e-mail em instantes.')
+        : 'Quando todos assinarem, você receberá as vias finais por e-mail.'))));
+    m.setFooter(h('button', { class: 'btn btn-ink', onclick: () => { m.close(); renderSigner(token); } }, 'Fechar'));
+  }
+
+  function draw() { ({ dados, token: tokenStep, identificacao, assinatura })[steps[st.i]](); }
+  draw();
+}
+
+function signaturePad() {
+  const canvas = h('canvas');
+  const ctx = canvas.getContext('2d');
+  let ink = false, drawing = false, last = null;
+  const fit = () => {
+    const dpr = Math.max(window.devicePixelRatio || 1, 2), r = canvas.getBoundingClientRect();
+    canvas.width = Math.round(r.width * dpr); canvas.height = Math.round(r.height * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = '#1b2a59'; ctx.lineWidth = 2.4; ink = false;
+  };
+  const pos = (e) => { const r = canvas.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; };
+  canvas.addEventListener('pointerdown', (e) => { drawing = true; last = pos(e); canvas.setPointerCapture(e.pointerId); ctx.beginPath(); ctx.arc(last.x, last.y, 1.1, 0, Math.PI * 2); ctx.fillStyle = '#1b2a59'; ctx.fill(); ink = true; });
+  canvas.addEventListener('pointermove', (e) => {
+    if (!drawing) return;
+    const p = pos(e), mid = { x: (last.x + p.x) / 2, y: (last.y + p.y) / 2 };
+    ctx.beginPath(); ctx.moveTo(last.x, last.y); ctx.quadraticCurveTo(last.x, last.y, mid.x, mid.y); ctx.lineTo(p.x, p.y); ctx.stroke(); last = p; ink = true;
+  });
+  const stop = () => { drawing = false; };
+  canvas.addEventListener('pointerup', stop); canvas.addEventListener('pointercancel', stop);
+  const el = h('div', { class: 'pad' }, canvas, h('div', { class: 'base' }), h('div', { class: 'hint' }, 'Desenhe sua assinatura com o dedo ou o mouse'),
+    h('button', { class: 'btn btn-ghost btn-sm clr', onclick: () => { ctx.clearRect(0, 0, canvas.width, canvas.height); ink = false; } }, 'Limpar'));
+  return { el, fit, hasInk: () => ink, toPng: () => trimCanvas(canvas) };
+}
+function trimCanvas(c) {
+  const ctx = c.getContext('2d'), { width: w, height: hh } = c, data = ctx.getImageData(0, 0, w, hh).data;
+  let x0 = w, y0 = hh, x1 = 0, y1 = 0;
+  for (let y = 0; y < hh; y++) for (let x = 0; x < w; x++) if (data[(y * w + x) * 4 + 3] > 10) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+  if (x1 <= x0 || y1 <= y0) return c.toDataURL('image/png');
+  const pad = 12, out = document.createElement('canvas'), cw = x1 - x0 + 1 + pad * 2, ch = y1 - y0 + 1 + pad * 2, k = Math.min(1, 900 / cw);
+  out.width = Math.round(cw * k); out.height = Math.round(ch * k);
+  out.getContext('2d').drawImage(c, x0 - pad, y0 - pad, cw, ch, 0, 0, out.width, out.height);
+  return out.toDataURL('image/png');
+}
+async function typedPng(text, font) {
+  try { await document.fonts.load(`80px "${font}"`, text); } catch (e) { /* fonte padrão */ }
+  const c = document.createElement('canvas'); c.width = 900; c.height = 240;
+  const ctx = c.getContext('2d'); let size = 110;
+  do { ctx.font = `${size}px "${font}", cursive`; size -= 4; } while (ctx.measureText(text).width > 840 && size > 30);
+  ctx.fillStyle = '#1b2a59'; ctx.textBaseline = 'middle'; ctx.textAlign = 'center'; ctx.fillText(text, 450, 125);
+  return trimCanvas(c);
+}
+
+function openDecline(token) {
+  const reason = h('textarea', { class: 'in', placeholder: 'Explique o motivo da recusa' });
+  const go = h('button', { class: 'btn btn-danger' }, 'Recusar assinatura');
+  const m = modal({ title: 'Recusar assinatura', body: [h('p', { style: 'margin-top:0' }, 'O remetente será avisado e o envelope não poderá mais ser assinado por ninguém.'), reason],
+    footer: [h('button', { class: 'btn btn-ghost', onclick: () => m.close() }, 'Voltar'), go] });
+  go.addEventListener('click', () => {
+    if (reason.value.trim().length < 5) return toast('Informe o motivo.', true);
+    busy(go, async () => { await api('decline', { token, reason: reason.value.trim(), client: await clientInfo() }); m.close(); toast('Recusa registrada.'); renderSigner(token); }).catch(() => {});
+  });
+}
+
+/* =====================================================================
+   VERIFICAÇÃO PÚBLICA
+   ===================================================================== */
+function renderVerify(initial) {
+  const input = h('input', { class: 'in mono', style: 'font-size:16px;text-transform:uppercase', placeholder: 'XXXX-XXXX-XXXX-XXXX', value: initial || '' });
+  const btn = h('button', { class: 'btn btn-ink', type: 'submit' }, icon('search'), 'Verificar');
+  const out = h('div', { style: 'margin-top:22px' });
+  const form = h('form', { style: 'display:flex;gap:10px', onsubmit: (e) => { e.preventDefault(); run(); } }, input, btn);
+  async function run() {
+    const code = input.value.trim(); if (!code) return;
+    history.replaceState(null, '', '?v=' + encodeURIComponent(code.toUpperCase()));
+    out.replaceChildren(loadingView('Consultando…'));
+    let d;
+    try { d = await api('verify', { code }); }
+    catch (e) { out.replaceChildren(h('div', { class: 'alert bad' }, h('span', { html: I.info }), h('div', null, e.message))); return; }
+    if (d.brand) CONFIG.BRAND = d.brand;
+    const doc = d.document, env = d.env, fileRes = h('div');
+    const fin = h('input', { type: 'file', accept: 'application/pdf,.pdf', style: 'display:none', onchange: async () => {
+      const f = fin.files[0]; if (!f) return;
+      const hx = await sha256(new Uint8Array(await f.arrayBuffer()));
+      fileRes.replaceChildren(hx === doc.finalHash
+        ? h('div', { class: 'alert ok' }, h('span', { html: I.check }), h('div', null, h('b', null, 'Arquivo autêntico.'), ' Este PDF é idêntico à via final assinada registrada para este código.'))
+        : hx === doc.hash ? h('div', { class: 'alert info' }, h('span', { html: I.info }), h('div', null, h('b', null, 'Este é o arquivo original'), ' (antes das assinaturas), idêntico ao registrado.'))
+          : h('div', { class: 'alert bad' }, h('span', { html: I.info }), h('div', null, h('b', null, 'Arquivo não confere.'), ' O PDF selecionado não corresponde ao registrado para este código.')));
+      fin.value = '';
+    } });
+    out.replaceChildren(h('div', { class: 'card', style: 'padding:24px' },
+      h('div', { style: 'display:flex;gap:10px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;margin-bottom:16px' },
+        h('div', { style: 'min-width:0' }, h('div', { class: 'small muted', style: 'font-weight:700;letter-spacing:.06em;text-transform:uppercase' }, 'Documento encontrado'),
+          h('h2', { style: 'font-size:22px;word-break:break-word' }, doc.name)), badge(ENV_ST, env.status)),
+      h('dl', { class: 'kv' },
+        h('dt', null, 'Código'), h('dd', { class: 'mono' }, doc.code),
+        h('dt', null, 'Envelope'), h('dd', null, env.name + (env.otherDocs.length ? ` (com mais ${env.otherDocs.length} documento(s))` : '')),
+        h('dt', null, 'Criado em'), h('dd', null, fmtDT(env.createdAt) + (env.sender ? ' por ' + env.sender : '')),
+        env.completedAt && h('dt', null, 'Concluído em'), env.completedAt && h('dd', null, fmtDT(env.completedAt)),
+        h('dt', null, 'SHA-256 do original'), h('dd', { class: 'mono' }, doc.hash),
+        doc.finalHash && h('dt', null, 'SHA-256 da via final'), doc.finalHash && h('dd', { class: 'mono' }, doc.finalHash)),
+      h('div', { class: 'section-t' }, 'Signatários'),
+      h('ul', { class: 'plist' }, d.signers.map(s => h('li', null, h('span', { class: 'dot ' + s.status }, initials(s.name)),
+        h('div', { style: 'min-width:0' }, h('div', { style: 'font-weight:600' }, s.name),
+          h('div', { class: 'small muted' }, `${s.roleLabel} · ${s.email}${s.cpf ? ' · CPF ' + s.cpf : ''}${s.signedAt ? ' · assinou em ' + fmtDT(s.signedAt) : ''}`),
+          h('div', { class: 'small muted' }, 'Autenticação: ' + s.auths.join(', '))),
+        h('span', { class: 'st' }, badge(SIG_ST, s.status))))),
+      h('div', { class: 'section-t' }, 'Conferir um arquivo'),
+      h('p', { class: 'small muted', style: 'margin:-4px 0 10px' }, 'Selecione o PDF que você recebeu para conferir se é idêntico ao registrado. A conferência é feita no seu navegador; o arquivo não é enviado a ninguém.'),
+      h('button', { class: 'btn btn-ghost', onclick: () => fin.click() }, icon('upload'), 'Selecionar PDF'), fin, h('div', { style: 'margin-top:12px' }, fileRes),
+      h('div', { class: 'section-t' }, 'Histórico'),
+      h('div', { class: 'timeline' }, d.events.map(e => h('div', { class: 'ev ' + e.type }, h('div', { class: 'd' }, fmtDT(e.ts)), h('div', { class: 'tx' }, e.detail))))));
+  }
+  mount(topbar(null), h('main', { class: 'wrap' }, h('div', { class: 'verify-box' }, h('h1', null, 'Verificar documento'),
+    h('p', { class: 'muted', style: 'margin:0 0 20px' }, 'Informe o código de verificação impresso nas páginas do documento assinado.'), form, out)));
+  if (initial) run();
+}
+
+/* =====================================================================
+   INICIALIZAÇÃO
+   ===================================================================== */
+document.title = CONFIG.BRAND;
+const qs = new URLSearchParams(location.search);
+if (/COLE_AQUI/.test(CONFIG.API_URL)) {
+  mount(h('div', { class: 'center-screen' }, h('div', { class: 'card', style: 'padding:30px;max-width:520px' },
+    h('h2', { style: 'margin-bottom:8px' }, 'Configuração pendente'),
+    h('p', { class: 'muted' }, 'Edite o arquivo index.html e cole em CONFIG.API_URL a URL do App da Web do Google Apps Script (ou do Worker).'))));
+} else if (qs.get('t')) renderSigner(qs.get('t'));
+else if (qs.has('v')) renderVerify(qs.get('v'));
+else if (S.key) renderDashboard();
+else renderLogin();
+</script>
+</body>
+</html>
