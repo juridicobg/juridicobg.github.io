@@ -10,11 +10,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&family=Caveat:wght@600&family=Dancing+Script:wght@600&family=Homemade+Apple&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#14213d; --ink-2:#22325a; --gold:#c9a227; --gold-soft:#f4ead0;
+    --ink:#0e574e; --ink-2:#0b4840; --gold:#c9a227; --gold-soft:#f4ead0;
     --paper:#f6f4ef; --card:#ffffff; --line:#e4e0d6; --muted:#6b6b6b; --text:#1d1d1f;
     --ok:#2f7d4f; --ok-soft:#e5f2ea; --run:#a86a10; --run-soft:#fbf0dc;
     --bad:#b42318; --bad-soft:#fbe9e7; --off:#6b7280; --off-soft:#eef0f2;
-    --radius:12px; --shadow:0 1px 2px rgba(20,33,61,.06),0 8px 24px rgba(20,33,61,.06);
+    --radius:12px; --shadow:0 1px 2px rgba(14,87,78,.06),0 8px 24px rgba(14,87,78,.06);
   }
   *{box-sizing:border-box}
   html,body{margin:0;background:var(--paper);color:var(--text);font:15px/1.5 Manrope,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
@@ -49,7 +49,7 @@
   .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;word-break:break-all}
   label.f{display:block;font-size:13px;font-weight:600;color:var(--ink);margin:0 0 6px}
   .in{width:100%;border:1px solid var(--line);background:#fff;border-radius:9px;padding:10px 12px;outline:none;transition:.15s}
-  .in:focus{border-color:var(--ink);box-shadow:0 0 0 3px rgba(20,33,61,.08)}
+  .in:focus{border-color:var(--ink);box-shadow:0 0 0 3px rgba(14,87,78,.08)}
   textarea.in{resize:vertical;min-height:78px}
   .field{margin-bottom:14px}
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -161,10 +161,10 @@
   .integrity{display:flex;gap:8px;align-items:center;font-size:12.5px;color:var(--ok);margin-top:14px}
   .integrity svg{width:16px;height:16px;flex:none}
   .viewer{display:flex;flex-direction:column;gap:14px}
-  .pg{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.12),0 6px 20px rgba(20,33,61,.07);border-radius:4px;position:relative;overflow:hidden}
+  .pg{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.12),0 6px 20px rgba(14,87,78,.07);border-radius:4px;position:relative;overflow:hidden}
   .pg canvas{display:block;width:100%;height:auto}
   .pg .pn{position:absolute;right:8px;bottom:6px;font-size:11px;color:#999;background:rgba(255,255,255,.85);padding:1px 6px;border-radius:5px}
-  .actionbar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);box-shadow:0 -6px 24px rgba(20,33,61,.08);z-index:30;padding:14px 0 calc(14px + env(safe-area-inset-bottom))}
+  .actionbar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);box-shadow:0 -6px 24px rgba(14,87,78,.08);z-index:30;padding:14px 0 calc(14px + env(safe-area-inset-bottom))}
   .actionbar .wrap{display:flex;align-items:center;gap:12px}
   .actionbar .tx{flex:1;font-size:14px;min-width:0}
   .steps{display:flex;gap:6px;margin-bottom:20px}
@@ -182,7 +182,7 @@
   .typed{height:150px;border:1px solid var(--line);border-radius:10px;display:grid;place-items:center;font-size:46px;color:#1b2a59;background:#fff;overflow:hidden;padding:0 16px;text-align:center;line-height:1.1}
   .fonts{display:flex;gap:8px;margin-top:8px}
   .fonts button{flex:1;border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px;cursor:pointer;font-size:20px;color:#1b2a59}
-  .fonts button.on{border-color:var(--ink);box-shadow:0 0 0 2px rgba(20,33,61,.12)}
+  .fonts button.on{border-color:var(--ink);box-shadow:0 0 0 2px rgba(14,87,78,.12)}
   .check{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;margin-top:16px;cursor:pointer}
   .check input{margin-top:3px;width:17px;height:17px;accent-color:var(--ink);flex:none}
   .done-ic{width:68px;height:68px;border-radius:50%;background:var(--ok-soft);color:var(--ok);display:grid;place-items:center;margin:4px auto 16px}
@@ -211,7 +211,6 @@
   .fsec{padding:22px 24px;margin-top:16px}
   .fsec>h2{font-size:19px;margin-bottom:4px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
   .fsec>h2 .opt{font-family:Manrope,sans-serif;font-size:13px;font-weight:600;color:var(--muted)}
-  .fsec>h2 select,.fsec>h2 button{font-family:Manrope,sans-serif;font-size:13px;font-weight:600;letter-spacing:0}
   .fsec .lead{font-size:13px;color:var(--muted);margin:0 0 14px}
   .req{color:var(--bad)}
   .doc-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fcfbf8;margin-bottom:8px}
@@ -232,7 +231,7 @@
   .scard .body{flex:1;min-width:0}
   .scard .nm{font-weight:700;color:var(--ink)}
   .scard .sub{font-size:12.5px;color:var(--muted);margin:2px 0 8px;word-break:break-word}
-  .sticky-foot{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);box-shadow:0 -6px 24px rgba(20,33,61,.08);z-index:30;padding:12px 0 calc(12px + env(safe-area-inset-bottom))}
+  .sticky-foot{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);box-shadow:0 -6px 24px rgba(14,87,78,.08);z-index:30;padding:12px 0 calc(12px + env(safe-area-inset-bottom))}
   .sticky-foot .in-wrap{max-width:880px;margin:0 auto;padding:0 20px;display:flex;gap:10px;justify-content:flex-end;align-items:center}
   .sticky-foot .sum{flex:1;font-size:13px;color:var(--muted)}
   .auth-opt{display:flex;gap:12px;align-items:flex-start;padding:12px;border:1px solid var(--line);border-radius:10px;margin-bottom:8px;cursor:pointer}
@@ -268,6 +267,8 @@
     .doc-row{flex-wrap:wrap}
     .doc-row input.in{flex:1 1 100%;order:3}
   }
+
+  .fsec>h2 select,.fsec>h2 button{font-family:Manrope,sans-serif;font-size:13px;font-weight:600;letter-spacing:0}
 </style>
 </head>
 <body>
@@ -331,6 +332,9 @@ function h(tag, attrs, ...kids) {
   }
   return el;
 }
+// ignora valores vazios (false/null) passados a replaceChildren — evita aparecer "false" na tela
+const _rc = Element.prototype.replaceChildren;
+Element.prototype.replaceChildren = function (...n) { return _rc.apply(this, n.flat(Infinity).filter(x => x !== false && x !== null && x !== undefined)); };
 const $app = document.getElementById('app');
 const mount = (...n) => { $app.replaceChildren(...n.filter(Boolean)); window.scrollTo(0, 0); };
 
@@ -575,38 +579,35 @@ async function renderPdf(container, bytes) {
    PAINEL DO REMETENTE
    ===================================================================== */
 const S = {
-  get key() { return sessionStorage.getItem('as_key') || ''; },
-  set key(v) { v ? sessionStorage.setItem('as_key', v) : sessionStorage.removeItem('as_key'); },
-  get sender() { return localStorage.getItem('as_sender') || ''; },
-  set sender(v) { localStorage.setItem('as_sender', v || ''); },
-  get senderEmail() { return localStorage.getItem('as_sender_email') || ''; },
-  set senderEmail(v) { localStorage.setItem('as_sender_email', v || ''); }
+  get session() { return sessionStorage.getItem('bs_session') || ''; },
+  set session(v) { v ? sessionStorage.setItem('bs_session', v) : sessionStorage.removeItem('bs_session'); },
+  get user() { try { return JSON.parse(sessionStorage.getItem('bs_user') || 'null'); } catch (e) { return null; } },
+  set user(v) { v ? sessionStorage.setItem('bs_user', JSON.stringify(v)) : sessionStorage.removeItem('bs_user'); },
+  get isMaster() { return (S.user || {}).role === 'master'; }
 };
-const adminApi = (action, p = {}) => api(action, { adminKey: S.key, sender: S.sender, ...p }).catch((e) => {
-  if (/Senha de acesso/.test(e.message)) { S.key = ''; renderLogin(); }
+const adminApi = (action, p = {}) => api(action, { session: S.session, ...p }).catch((e) => {
+  if (/Sessão expirada|Usuário desativado/.test(e.message)) { S.session = ''; S.user = null; renderLogin(); }
   throw e;
 });
+function logout() { api('logout', { session: S.session }).catch(() => {}); S.session = ''; S.user = null; renderLogin(); }
 
 function renderLogin() {
-  const key = h('input', { class: 'in', type: 'password', autocomplete: 'current-password', placeholder: '••••••••' });
-  const nm = h('input', { class: 'in', value: S.sender, placeholder: 'Ex.: Jurídico — Renan Malta' });
-  const em = h('input', { class: 'in', type: 'email', value: S.senderEmail, placeholder: 'seu.email@empresa.com.br' });
+  const login = h('input', { class: 'in', autocomplete: 'username', placeholder: 'Ex.: juridico', autocapitalize: 'none' });
+  const pass = h('input', { class: 'in', type: 'password', autocomplete: 'current-password', placeholder: '••••••••' });
   const btn = h('button', { class: 'btn btn-ink btn-block', type: 'submit' }, 'Entrar');
   const form = h('form', {
     onsubmit: async (e) => {
       e.preventDefault();
-      if (!nm.value.trim()) return toast('Informe seu nome ou setor.', true);
-      if (!emailOk(em.value)) return toast('Informe seu e-mail.', true);
+      if (!login.value.trim() || !pass.value) return toast('Informe usuário e senha.', true);
       await busy(btn, async () => {
-        await api('adminLogin', { adminKey: key.value });
-        S.key = key.value; S.sender = nm.value.trim(); S.senderEmail = em.value.trim().toLowerCase();
+        const r = await api('login', { login: login.value.trim().toLowerCase(), password: pass.value, client: await clientInfo() });
+        S.session = r.session; S.user = r.user;
         renderDashboard();
       }).catch(() => {});
     }
   },
-    h('div', { class: 'field' }, h('label', { class: 'f' }, 'Senha de acesso'), key),
-    h('div', { class: 'field' }, h('label', { class: 'f' }, 'Seu nome ou setor (aparece como remetente)'), nm),
-    h('div', { class: 'field' }, h('label', { class: 'f' }, 'Seu e-mail (usado em “Eu vou assinar”)'), em),
+    h('div', { class: 'field' }, h('label', { class: 'f' }, 'Usuário'), login),
+    h('div', { class: 'field' }, h('label', { class: 'f' }, 'Senha'), pass),
     btn);
   mount(h('div', { class: 'center-screen' }, h('div', null,
     h('div', { class: 'card login' },
@@ -615,15 +616,63 @@ function renderLogin() {
       h('p', { class: 'muted small', style: 'margin:0 0 22px' }, 'Envie documentos para assinatura e acompanhe cada etapa.'),
       form),
     h('p', { class: 'footer-note' }, h('a', { href: '?v=' }, 'Verificar autenticidade de um documento')))));
-  setTimeout(() => key.focus(), 50);
+  setTimeout(() => login.focus(), 50);
+}
+
+function openUsers() {
+  const listEl = h('div', null, loadingView());
+  const m = modal({ title: 'Usuários', wide: true, body: [
+    h('p', { class: 'small muted', style: 'margin-top:0' }, 'Cada usuário de área vê e gerencia apenas os envelopes que ele mesmo criou. O master vê todos. Desativar um usuário corta o acesso na hora; os envelopes dele continuam guardados e visíveis para o master.'),
+    h('div', { style: 'margin-bottom:12px' }, h('button', { class: 'btn btn-primary btn-sm', onclick: () => editUser({}) }, icon('plus'), 'Novo usuário')),
+    listEl] });
+  let users = [];
+  const draw = () => listEl.replaceChildren(...(users.length ? users.map(u => h('div', { class: 'srow' },
+    h('span', { class: 'dot ' + (u.active ? 'assinado' : 'pendente') }, initials(u.name)),
+    h('div', { class: 'info' },
+      h('div', null, h('span', { class: 'nm' }, u.name), ' ', h('span', { class: 'badge ' + (u.active ? 'st-ok' : 'st-off') }, u.active ? 'Ativo' : 'Desativado')),
+      h('div', { class: 'small muted' }, `Login: ${u.login} · Área: ${u.area}${u.email ? ' · ' + u.email : ''}`),
+      h('div', { class: 'small muted' }, u.lastLoginAt ? 'Último acesso em ' + fmtDT(u.lastLoginAt) : 'Nunca acessou')),
+    h('div', { class: 'acts' },
+      h('button', { class: 'btn btn-ghost btn-sm', onclick: () => editUser(u) }, icon('edit'), 'Editar / senha'),
+      h('button', { class: 'btn btn-ghost btn-sm', onclick: (e) => busy(e.currentTarget, async () => { users = await adminApi('users', { op: 'toggle', id: u.id }); draw(); }).catch(() => {}) }, u.active ? 'Desativar' : 'Reativar'))))
+    : [h('div', { class: 'empty', style: 'padding:24px' }, 'Nenhum usuário de área ainda. Crie um login para cada área (ex.: administrativo, juridico, dprh).')]));
+  function editUser(u) {
+    const login = h('input', { class: 'in', value: u.login || '', placeholder: 'ex.: juridico', autocapitalize: 'none' });
+    const name = h('input', { class: 'in', value: u.name || '', placeholder: 'ex.: Jurídico' });
+    const area = h('input', { class: 'in', value: u.area || '', placeholder: 'ex.: Jurídico' });
+    const email = h('input', { class: 'in', type: 'email', value: u.email || '', placeholder: 'e-mail da área (usado em “Eu vou assinar”)' });
+    const pass = h('input', { class: 'in', type: 'password', autocomplete: 'new-password', placeholder: u.id ? 'deixe em branco para manter a atual' : 'mínimo de 8 caracteres' });
+    const ok = h('button', { class: 'btn btn-ink' }, u.id ? 'Salvar' : 'Criar usuário');
+    const e2 = modal({ title: u.id ? 'Editar usuário' : 'Novo usuário', body: [
+      h('div', { class: 'grid2' }, h('div', { class: 'field' }, h('label', { class: 'f' }, 'Login'), login), h('div', { class: 'field' }, h('label', { class: 'f' }, 'Senha'), pass)),
+      h('div', { class: 'grid2' }, h('div', { class: 'field' }, h('label', { class: 'f' }, 'Nome de exibição (remetente)'), name), h('div', { class: 'field' }, h('label', { class: 'f' }, 'Área'), area)),
+      h('div', { class: 'field' }, h('label', { class: 'f' }, 'E-mail'), email)],
+      footer: [h('button', { class: 'btn btn-ghost', onclick: () => e2.close() }, 'Cancelar'), ok] });
+    ok.onclick = () => busy(ok, async () => {
+      users = await adminApi('users', { op: 'save', user: { id: u.id, login: login.value.trim().toLowerCase(), name: name.value.trim(), area: area.value.trim(), email: email.value.trim(), password: pass.value } });
+      e2.close(); draw(); toast(u.id ? 'Usuário atualizado.' : 'Usuário criado.');
+    }).catch(() => {});
+  }
+  adminApi('users', { op: 'list' }).then(r => { users = r; draw(); }).catch(e => listEl.replaceChildren(h('div', { class: 'alert bad' }, e.message)));
+}
+
+function openChangePassword() {
+  const cur = h('input', { class: 'in', type: 'password', autocomplete: 'current-password' });
+  const nw = h('input', { class: 'in', type: 'password', autocomplete: 'new-password', placeholder: 'mínimo de 8 caracteres' });
+  const ok = h('button', { class: 'btn btn-ink' }, 'Alterar senha');
+  const m = modal({ title: 'Alterar minha senha', body: [h('div', { class: 'field' }, h('label', { class: 'f' }, 'Senha atual'), cur), h('div', { class: 'field' }, h('label', { class: 'f' }, 'Nova senha'), nw)],
+    footer: [h('button', { class: 'btn btn-ghost', onclick: () => m.close() }, 'Cancelar'), ok] });
+  ok.onclick = () => busy(ok, async () => { await adminApi('changePassword', { current: cur.value, password: nw.value }); m.close(); toast('Senha alterada.'); }).catch(() => {});
 }
 
 let DASH = { list: [], filter: 'todos', q: '' };
 function dashTopbar() {
   return topbar([
-    h('span', { class: 'who' }, S.sender),
+    h('span', { class: 'who' }, (S.user || {}).name + ((S.user || {}).role === 'master' ? ' · acesso total' : ' · ' + (S.user || {}).area)),
+    S.isMaster ? h('button', { class: 'btn btn-ghost-dark btn-sm', onclick: openUsers }, icon('user'), 'Usuários')
+      : h('button', { class: 'btn btn-ghost-dark btn-sm', onclick: openChangePassword }, 'Minha senha'),
     h('button', { class: 'btn btn-primary btn-sm', onclick: renderNewEnvelope }, icon('plus'), 'Novo envelope'),
-    h('button', { class: 'btn btn-ghost-dark btn-sm', onclick: () => { S.key = ''; renderLogin(); } }, 'Sair')
+    h('button', { class: 'btn btn-ghost-dark btn-sm', onclick: logout }, 'Sair')
   ]);
 }
 
@@ -657,7 +706,7 @@ function drawDashboard(content) {
       const signed = e.signers.filter(s => s.status === 'assinado').length;
       return h('button', { class: 'row', onclick: () => openDetail(e.id) },
         h('div', { style: 'min-width:0' }, h('div', { class: 't' }, e.name),
-          h('div', { class: 's' }, `${e.documents.length} documento(s) · enviado em ${fmtD(e.createdAt)}${e.sender ? ' · ' + e.sender : ''} · prazo ${fmtYmd(e.deadline)}`)),
+          h('div', { class: 's' }, `${S.isMaster && e.ownerArea ? '[' + e.ownerArea + '] ' : ''}${e.documents.length} documento(s) · enviado em ${fmtD(e.createdAt)}${e.sender ? ' · ' + e.sender : ''} · prazo ${fmtYmd(e.deadline)}`)),
         h('div', { class: 'dots c-dots' }, e.signers.map(s => h('span', { class: 'dot ' + s.status, title: `${s.name} — ${SIG_ST[s.status]?.[0] || s.status}` }, initials(s.name)))),
         h('div', { class: 'c-prog' }, h('div', { class: 's', style: 'margin-bottom:5px' }, `${signed} de ${e.signers.length} assinaturas`),
           h('div', { class: 'prog' }, h('i', { style: `width:${Math.round(signed / e.signers.length * 100)}%` }))),
@@ -725,7 +774,7 @@ function renderNewEnvelope() {
   function drawSigners() {
     signersBox.replaceChildren(
       h('div', { class: 'btn-row' },
-        h('button', { class: 'btn btn-out btn-sm', onclick: () => editSigner({ name: S.sender.includes('—') ? '' : S.sender, email: S.senderEmail }) }, icon('user'), 'Eu vou assinar'),
+        h('button', { class: 'btn btn-out btn-sm', onclick: () => editSigner({ name: '', email: (S.user || {}).email || '' }) }, icon('user'), 'Eu vou assinar'),
         h('button', { class: 'btn btn-out btn-sm', onclick: () => editSigner({}) }, icon('plus'), 'Signatário novo'),
         h('button', { class: 'btn btn-out btn-sm', onclick: pickContact }, icon('book'), 'Signatário da agenda'),
         h('button', { class: 'btn btn-out btn-sm' + (st.ordered ? ' on' : ''), disabled: st.signers.length < 2 && !st.ordered, onclick: () => { st.ordered = !st.ordered; drawSigners(); } }, '↓↑ ', st.ordered ? 'Ordem ativada' : 'Ordenar assinaturas')),
@@ -880,7 +929,7 @@ function renderNewEnvelope() {
     await busy(sendBtn, async () => {
       const r = await adminApi('createEnvelope', {
         name: nameIn.value.trim(), subject: st.subject.trim(), message: st.message.trim(), ordered: st.ordered, deadline: st.deadline,
-        reminderDays: st.reminderDays, finalize: st.finalize, observers: st.observers, senderEmail: S.senderEmail,
+        reminderDays: st.reminderDays, finalize: st.finalize, observers: st.observers,
         documents: st.docs.map(d => ({ name: d.name.trim() || d.fileName, fileName: d.fileName, sourceType: d.sourceType, pages: d.pages, pdfBase64: bytesToB64(d.bytes) })),
         signers: st.signers.map(s => ({ name: s.name, email: s.email, phone: s.phone, delivery: s.delivery, cpf: s.cpf, birth: s.birth, askCpf: s.askCpf, role: s.role, auths: s.auths, saveContact: s.saveContact })),
         client: await clientInfo()
@@ -1203,7 +1252,8 @@ function openSignFlow(token, d, docHashes) {
 
   function assinatura() {
     const holder = h('div'), tabs = h('div', { class: 'tabs' });
-    const accept = h('input', { type: 'checkbox' });
+    const accept = h('input', { type: 'checkbox' }), acceptMeans = h('input', { type: 'checkbox' });
+    const decl = d.declaracoes || [];
     const signBtn = h('button', { class: 'btn btn-primary' }, icon('pen'), 'Assinar');
     function drawTabs() {
       tabs.replaceChildren(h('button', { class: st.type === 'desenhada' ? 'on' : '', onclick: () => { st.type = 'desenhada'; drawTabs(); } }, 'Desenhar'),
@@ -1218,21 +1268,22 @@ function openSignFlow(token, d, docHashes) {
     }
     drawTabs();
     signBtn.onclick = async () => {
-      if (!accept.checked) return toast('Marque a declaração para assinar.', true);
+      if (!accept.checked || !acceptMeans.checked) return toast('Marque as duas declarações para assinar.', true);
       let img;
       if (st.type === 'desenhada') { if (!pad || !pad.hasInk()) return toast('Desenhe sua assinatura.', true); img = pad.toPng(); }
       else { if (st.typed.trim().length < 3) return toast('Digite sua assinatura.', true); img = await typedPng(st.typed.trim(), st.font); }
       await busy(signBtn, async () => {
         const geo = await getGeo();
-        const r = await api('sign', { token, code: st.code, cpf: st.cpf, birth: st.birth, sigType: st.type, sigImage: img, docHashes, accept: true, geo,
+        const r = await api('sign', { token, code: st.code, cpf: st.cpf, birth: st.birth, sigType: st.type, sigImage: img, docHashes, accept: true, acceptMeans: true, geo,
           evidence: { docFront: st.ev.docFront, docBack: st.ev.docBack, selfie: st.ev.selfie, address: st.ev.address }, client: await clientInfo() });
         done(r);
       }, 'Assinando…').catch(() => {});
     };
     m.setTitle('Sua assinatura');
     m.setBody(stepsBar(), tabs, holder,
-      h('label', { class: 'check' }, accept, h('span', null, 'Declaro que li e concordo com o conteúdo ', d.documents.length > 1 ? `dos ${d.documents.length} documentos do envelope “` : 'do documento “',
-        h('b', null, d.env.name), '” e que reconheço esta assinatura eletrônica como válida para comprovar minha autoria e manifestação de vontade, nos termos do art. 10, § 2º, da MP nº 2.200-2/2001.')));
+      h('div', { class: 'section-t', style: 'margin-top:18px' }, 'Declarações'),
+      h('label', { class: 'check', style: 'margin-top:6px' }, accept, h('span', null, decl[0] || 'Li e concordo integralmente com o conteúdo do(s) documento(s) deste envelope.')),
+      h('label', { class: 'check', style: 'margin-top:10px' }, acceptMeans, h('span', null, decl[1] || '')));
     m.setFooter(back(), signBtn);
   }
 
@@ -1367,7 +1418,7 @@ if (/COLE_AQUI/.test(CONFIG.API_URL)) {
     h('p', { class: 'muted' }, 'Edite o arquivo index.html e cole em CONFIG.API_URL a URL do App da Web do Google Apps Script (ou do Worker).'))));
 } else if (qs.get('t')) renderSigner(qs.get('t'));
 else if (qs.has('v')) renderVerify(qs.get('v'));
-else if (S.key) renderDashboard();
+else if (S.session) renderDashboard();
 else renderLogin();
 </script>
 </body>
